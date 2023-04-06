@@ -13,21 +13,19 @@ class Cnn(nn.Module):
         act = nn.ReLU()
         self.layers = []
         self.layers.append(nn.Conv2d(3, 10, 30))
+        self.layers.append(nn.MaxPool2d(4, 4))
+        #self.layers.append(act)
+        self.layers.append(nn.Conv2d(10, 30, 5))
         self.layers.append(nn.MaxPool2d(2, 2))
         #self.layers.append(act)
-        self.layers.append(nn.Conv2d(10, 30, 20))
-        self.layers.append(nn.MaxPool2d(2, 2))
+        #self.layers.append(nn.Conv2d(30, 60, 10))
+        #self.layers.append(nn.MaxPool2d(2, 2))
         #self.layers.append(act)
-        self.layers.append(nn.Conv2d(30, 600, 10))
-        self.layers.append(nn.MaxPool2d(2, 2))
-        #self.layers.append(act)
-        self.layers.append(nn.Linear(68450,1000))
-        self.layers.append(act)
+        self.layers.append(nn.Linear(10830,1000))
+        #self.layers.append(act) <-- keep
         self.layers.append(nn.Linear(1000,200))
-        self.layers.append(act)
-        self.layers.append(nn.Linear(200,100))
-        self.layers.append(act)
-        self.layers.append(nn.Linear(100,53))
+        #self.layers.append(act) <-- keep
+        self.layers.append(nn.Linear(200,53))
         self.layers = nn.ModuleList(self.layers)
         print(self)
 
@@ -39,6 +37,8 @@ class Cnn(nn.Module):
                 output = torch.flatten(output, 1)
                 first_linear = True
             output = layer(output)
+            if not isinstance(layer, nn.MaxPool2d):
+                output = torch.nn.functional.relu(output)
         return output
 
 def train():
@@ -49,9 +49,9 @@ def train():
     print([len(dsi) for dsi in datasets.values()])
 
     dataloaders = {}
-    batch_size = 8
+    batch_size = 12
     dataloaders["train"] = torch.utils.data.DataLoader(datasets["train"], batch_size=batch_size,
-                                         shuffle=True, num_workers=4)
+                                         shuffle=False, num_workers=4)
     dataloaders["test"] = torch.utils.data.DataLoader(datasets["test"], batch_size=batch_size,
                                          shuffle=False, num_workers=4)
     #print(next(iter(dataloaders["train"]))["image"].shape)
@@ -60,7 +60,7 @@ def train():
     #print([param.shape for param in model.parameters()])
 
     loss_criterion = nn.CrossEntropyLoss() # includes softmax on output of the network
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.05) #0.000005
 
     num_epochs = 5
     for epoch in range(num_epochs):
@@ -76,7 +76,6 @@ def train():
 
             # forward (get prediction)
             pred = model(batch["image"])
-            print(model)
             pred_labels = torch.argmax(torch.softmax(pred, -1), -1)
             print(pred_labels)
             # backward (get gradients)

@@ -74,8 +74,9 @@ class PlayingCardsSet(Dataset):
         if self.transform:
             transform = transforms.Compose(
                 [transforms.ToTensor(),
-                 transforms.Resize((400,400)),
-                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+                 
+                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                 transforms.Resize((200,200))])
             image = transform(image)
 
         if image.size()[0]==1:
