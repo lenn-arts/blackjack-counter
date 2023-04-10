@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import PIL.Image
+import numpy as np
 
 class PlayingCardsSet(Dataset):
     def __init__(self, root_dir, ds_type="train", transform=True) -> None:
@@ -33,7 +34,7 @@ class PlayingCardsSet(Dataset):
 
         # generate train and test
         self.filenames_train = []
-        self.len_train = 40
+        self.len_train = 45
         self.filenames_test = []
         current_label = self.labels[0]
         next_label = self.labels[0]
@@ -58,6 +59,11 @@ class PlayingCardsSet(Dataset):
             raise Exception("unvalid dataset subset type")
         self.labels = [get_label_from_filename(fn) for fn in self.filenames]
         
+        print(len(self.filenames))
+        index_debug = torch.randint(len(self.filenames), size=(1000,)).numpy()
+        print(index_debug)
+        self.filenames = np.asarray(self.filenames)[index_debug]
+        self.labels = np.asarray(self.labels)[index_debug]
 
         print(self.filenames)
 
@@ -76,7 +82,7 @@ class PlayingCardsSet(Dataset):
                 [transforms.ToTensor(),
                  
                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                 transforms.Resize((200,200))])
+                 transforms.Resize((100,100))])
             image = transform(image)
 
         if image.size()[0]==1:

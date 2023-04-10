@@ -10,21 +10,26 @@ from data_utils import PlayingCardsSet
 class Cnn(nn.Module):
     def __init__(self) -> None:
         super().__init__()
-        act = nn.ReLU()
+        #act = 
         self.layers = []
-        self.layers.append(nn.Conv2d(3, 10, 30))
-        self.layers.append(nn.MaxPool2d(4, 4))
-        #self.layers.append(act)
-        self.layers.append(nn.Conv2d(10, 30, 5))
+        self.layers.append(nn.Conv2d(3, 16, 5, stride=2))
+        self.layers.append(nn.ReLU())
         self.layers.append(nn.MaxPool2d(2, 2))
+        self.layers.append(nn.Conv2d(16, 64, 5))
+        self.layers.append(nn.ReLU())
+        self.layers.append(nn.MaxPool2d(2, 2))
+        self.layers.append(nn.Conv2d(64, 256, 3, padding=1))
+        self.layers.append(nn.ReLU())
+        self.layers.append(nn.MaxPool2d(2, 2))
+        #self.layers.append(nn.Conv2d(128, 256, 3, padding=1))
         #self.layers.append(act)
-        #self.layers.append(nn.Conv2d(30, 60, 10))
-        #self.layers.append(nn.MaxPool2d(2, 2))
+
+        self.layers.append(nn.Linear(256*5*5,1000))
+        self.layers.append(nn.ReLU())
+        #self.layers.append(nn.Linear(8000,1000))
         #self.layers.append(act)
-        self.layers.append(nn.Linear(10830,1000))
-        #self.layers.append(act) <-- keep
         self.layers.append(nn.Linear(1000,200))
-        #self.layers.append(act) <-- keep
+        self.layers.append(nn.ReLU())
         self.layers.append(nn.Linear(200,53))
         self.layers = nn.ModuleList(self.layers)
         print(self)
@@ -37,12 +42,12 @@ class Cnn(nn.Module):
                 output = torch.flatten(output, 1)
                 first_linear = True
             output = layer(output)
-            if not isinstance(layer, nn.MaxPool2d):
-                output = torch.nn.functional.relu(output)
+            #if not isinstance(layer, nn.MaxPool2d) and i_layer < len(self.layers):
+            #    output = torch.nn.functional.relu(output)
         return output
 
-def train():
-    src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards")
+def train(model, src_path, device):
+    src_path = src_path#os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards")
     datasets = {}
     datasets["train"] = PlayingCardsSet(src_path, "train")
     datasets["test"] = PlayingCardsSet(src_path, "test")
@@ -51,33 +56,31 @@ def train():
     dataloaders = {}
     batch_size = 12
     dataloaders["train"] = torch.utils.data.DataLoader(datasets["train"], batch_size=batch_size,
-                                         shuffle=False, num_workers=4)
+                                         shuffle=False, num_workers=0)
     dataloaders["test"] = torch.utils.data.DataLoader(datasets["test"], batch_size=batch_size,
-                                         shuffle=False, num_workers=4)
+                                         shuffle=False, num_workers=0)
     #print(next(iter(dataloaders["train"]))["image"].shape)
 
-    model = Cnn()
-    #print([param.shape for param in model.parameters()])
-
     loss_criterion = nn.CrossEntropyLoss() # includes softmax on output of the network
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.05) #0.000005
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001) #0.000005
 
-    num_epochs = 5
+    num_epochs = 10
     for epoch in range(num_epochs):
         running_loss = 0.0
         running_acc = 0.0
         for i_batch, batch in enumerate(dataloaders["train"]):
             # get batch data
-            gt_labels = batch["label"]
-            print(gt_labels)
+            gt_labels = batch["label"].to(device)
+            images = batch["image"].to(device)
+            print("gt\t", gt_labels)
             
             # reset gradients to zero
             optimizer.zero_grad()
 
             # forward (get prediction)
-            pred = model(batch["image"])
+            pred = model(images)
             pred_labels = torch.argmax(torch.softmax(pred, -1), -1)
-            print(pred_labels)
+            print("pred\t", pred_labels)
             # backward (get gradients)
             acc = (pred_labels == gt_labels).double().mean()
             loss = loss_criterion(pred, gt_labels)
@@ -93,5 +96,44 @@ def train():
                 running_loss = 0.0
                 running_acc=0.0
 
+        if epoch % 1 == 0:
+          torch.save({
+            'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': loss,
+            }, os.path.join(src_path, f"model_e{epoch}_b{i_batch}.pth"))
+
+    return model
+
+
+def test(model, src_path, device):
+    src_path = src_path#os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards")
+    datasets = {}
+    datasets["train"] = PlayingCardsSet(src_path, "train")
+    datasets["test"] = PlayingCardsSet(src_path, "test")
+    print([len(dsi) for dsi in datasets.values()])
+
+    dataloaders = {}
+    batch_size = 10
+    dataloaders["test"] = torch.utils.data.DataLoader(datasets["test"], batch_size=batch_size,
+                                         shuffle=False, num_workers=1)
+    running_acc = 0.0
+    counter = 0
+    for i_batch, batch in enumerate(dataloaders["test"]):
+        imgs = batch["image"].to(device)
+        gt_labels = batch["label"].to(device)
+        pred = model(imgs)
+        pred_labels = torch.argmax(torch.softmax(pred, -1), -1)
+        acc = (pred_labels == gt_labels).double().mean()
+        running_acc += acc
+        counter += 1
+    test_accuracy = running_acc/counter
+    print(f"TEST ACCURACY: {test_accuracy}")
+
 if __name__ == "__main__":
-    train()
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards")
+    model = Cnn()
+    train(model, src_path, device)
+    test(model, src_path, device)
