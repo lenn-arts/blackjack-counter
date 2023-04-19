@@ -1,0 +1,1 @@
+obj_dir/VSCCB.cpp obj_dir/VSCCB.h obj_dir/VSCCB.mk obj_dir/VSCCB__Syms.cpp obj_dir/VSCCB__Syms.h obj_dir/VSCCB__Trace.cpp obj_dir/VSCCB__Trace__Slow.cpp obj_dir/VSCCB__ver.d obj_dir/VSCCB_classes.mk  : /usr/bin/verilator_bin   /usr/bin/verilator_bin SCCB.sv 
