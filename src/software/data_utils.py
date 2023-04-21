@@ -34,7 +34,7 @@ class PlayingCardsSet(Dataset):
 
         # generate train and test
         self.filenames_train = []
-        self.len_train = 45
+        self.len_train = 20
         self.filenames_test = []
         current_label = self.labels[0]
         next_label = self.labels[0]
@@ -55,15 +55,17 @@ class PlayingCardsSet(Dataset):
             self.filenames = self.filenames_train
         elif ds_type is "test":
             self.filenames = self.filenames_test
+        elif ds_type is "all":
+            self.filenames = self.filenames
         else: 
             raise Exception("unvalid dataset subset type")
         self.labels = [get_label_from_filename(fn) for fn in self.filenames]
         
         print(len(self.filenames))
-        index_debug = torch.randint(len(self.filenames), size=(1000,)).numpy()
-        print(index_debug)
-        self.filenames = np.asarray(self.filenames)[index_debug]
-        self.labels = np.asarray(self.labels)[index_debug]
+        #index_debug = torch.randint(len(self.filenames), size=(100,)).numpy()
+        #print(index_debug)
+        #self.filenames = np.asarray(self.filenames)[index_debug]
+        #self.labels = np.asarray(self.labels)[index_debug]
 
         print(self.filenames)
 
@@ -91,3 +93,18 @@ class PlayingCardsSet(Dataset):
         sample = {'image': image, 'label': self.labels[index], 'filename': file_name}
 
         return sample
+
+
+    def resize_save(self, target_dir):
+      if not os.path.exists(target_dir):
+        os.mkdir(target_dir)
+      transform = transforms.Compose(
+                [transforms.ToTensor(),
+                 transforms.Resize((512,512)),
+                 transforms.ToPILImage()])
+      for fn in self.filenames:
+        image = PIL.Image.open(os.path.join(self.img_dir, fn)).convert("RGB")        
+        image = transform(image)
+        if not os.path.exists(os.path.join(target_dir, fn)):
+          image.save(os.path.join(target_dir, fn))  
+      print("done saving resized images")

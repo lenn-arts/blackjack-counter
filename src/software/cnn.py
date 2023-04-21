@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from datetime import date
 
 import torch
 import torch.nn as nn
@@ -12,25 +13,25 @@ class Cnn(nn.Module):
         super().__init__()
         #act = 
         self.layers = []
-        self.layers.append(nn.Conv2d(3, 16, 5, stride=2))
+        self.layers.append(nn.Conv2d(1, 16, 5, stride=2))
         self.layers.append(nn.ReLU())
         self.layers.append(nn.MaxPool2d(2, 2))
-        self.layers.append(nn.Conv2d(16, 64, 5))
+        self.layers.append(nn.Conv2d(16, 64, 5, stride=2))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.MaxPool2d(2, 2))
-        self.layers.append(nn.Conv2d(64, 256, 3, padding=1))
+        #self.layers.append(nn.MaxPool2d(2, 2))
+        self.layers.append(nn.Conv2d(64, 256, 3, padding=1, stride=2))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.MaxPool2d(2, 2))
+        #self.layers.append(nn.MaxPool2d(2, 2))
         #self.layers.append(nn.Conv2d(128, 256, 3, padding=1))
         #self.layers.append(act)
 
-        self.layers.append(nn.Linear(256*5*5,1000))
+        self.layers.append(nn.Linear(256*7*7,800))
         self.layers.append(nn.ReLU())
         #self.layers.append(nn.Linear(8000,1000))
         #self.layers.append(act)
-        self.layers.append(nn.Linear(1000,200))
-        self.layers.append(nn.ReLU())
-        self.layers.append(nn.Linear(200,53))
+        #self.layers.append(nn.Linear(1000,200))
+        #self.layers.append(nn.ReLU())
+        self.layers.append(nn.Linear(800,53))
         self.layers = nn.ModuleList(self.layers)
         print(self)
 
@@ -54,7 +55,7 @@ def train(model, src_path, device):
     print([len(dsi) for dsi in datasets.values()])
 
     dataloaders = {}
-    batch_size = 12
+    batch_size = 32
     dataloaders["train"] = torch.utils.data.DataLoader(datasets["train"], batch_size=batch_size,
                                          shuffle=False, num_workers=0)
     dataloaders["test"] = torch.utils.data.DataLoader(datasets["test"], batch_size=batch_size,
@@ -62,9 +63,9 @@ def train(model, src_path, device):
     #print(next(iter(dataloaders["train"]))["image"].shape)
 
     loss_criterion = nn.CrossEntropyLoss() # includes softmax on output of the network
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001) #0.000005
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0005) #0.000005
 
-    num_epochs = 10
+    num_epochs = 5
     for epoch in range(num_epochs):
         running_loss = 0.0
         running_acc = 0.0
@@ -72,7 +73,7 @@ def train(model, src_path, device):
             # get batch data
             gt_labels = batch["label"].to(device)
             images = batch["image"].to(device)
-            print("gt\t", gt_labels)
+            #print("gt\t", gt_labels)
             
             # reset gradients to zero
             optimizer.zero_grad()
@@ -80,19 +81,19 @@ def train(model, src_path, device):
             # forward (get prediction)
             pred = model(images)
             pred_labels = torch.argmax(torch.softmax(pred, -1), -1)
-            print("pred\t", pred_labels)
+            #print("pred\t", pred_labels)
             # backward (get gradients)
-            acc = (pred_labels == gt_labels).double().mean()
+            acc = (pred_labels == gt_labels).detach().double().mean()
             loss = loss_criterion(pred, gt_labels)
             loss.backward()
             # optimize weights according to gradients
             optimizer.step()
 
-            running_loss+=loss
-            running_acc+=acc
-            print(f"epoch {epoch}, batch {i_batch}: loss = {loss}, acc={acc}")
+            running_loss+=loss.detach()
+            running_acc+=acc.detach()
+            print(f"epoch {epoch}, batch {i_batch}: loss = {torch.round(loss.detach(),decimals=3)}, acc={torch.round(acc.detach(),decimals=3)}")
             if i_batch % 5 == 4:
-                print(f"epoch {epoch}, batch {i_batch}: avg loss per batch = {running_loss/5.0}, avg acc = {running_acc/5.0}")
+                print(f"epoch {epoch}, batch {i_batch}: avg loss per batch = {torch.round(running_loss/5.0, decimals=3)}, avg acc = {torch.round(running_acc/5.0, decimals=3)}")
                 running_loss = 0.0
                 running_acc=0.0
 
@@ -102,7 +103,7 @@ def train(model, src_path, device):
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
             'loss': loss,
-            }, os.path.join(src_path, f"model_e{epoch}_b{i_batch}.pth"))
+            }, os.path.join(src_path, f"{date.today()}_model_e{epoch}_b{i_batch}.pth"))
 
     return model
 
@@ -110,12 +111,11 @@ def train(model, src_path, device):
 def test(model, src_path, device):
     src_path = src_path#os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards")
     datasets = {}
-    datasets["train"] = PlayingCardsSet(src_path, "train")
     datasets["test"] = PlayingCardsSet(src_path, "test")
     print([len(dsi) for dsi in datasets.values()])
 
     dataloaders = {}
-    batch_size = 10
+    batch_size = 32
     dataloaders["test"] = torch.utils.data.DataLoader(datasets["test"], batch_size=batch_size,
                                          shuffle=False, num_workers=1)
     running_acc = 0.0
@@ -133,7 +133,7 @@ def test(model, src_path, device):
 
 if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards")
+    src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards_small")
     model = Cnn()
     train(model, src_path, device)
     test(model, src_path, device)
