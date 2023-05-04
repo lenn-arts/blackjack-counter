@@ -27,7 +27,7 @@ void print_value(void) {
       perror("ioctl(CNN_WRITE_VAL) failed");
       return;
   }
-  printf(value_local);
+  printf("%d", value_local);
 }
 
 /* Set the background color */
@@ -38,7 +38,7 @@ int get_value(void)
       perror("ioctl(CNN_READ_VAL) failed");
       return;
   }
-  printf("read:");
+  printf("\nread:");
   printf("%d", value_local);
   return value_local;
 };
@@ -50,7 +50,7 @@ void set_value(const int value_local)
       perror("ioctl(CNN_WRITE_VAL) failed");
       return;
   }
-  printf("written:");
+  printf("\nwritten:");
   printf("%d", value_local);
 };
 
@@ -72,6 +72,7 @@ int main()
 
   for (i = 0 ; i < 24 ; i++) {
     set_value(i);
+    get_value();
     usleep(400000);
   }
   
