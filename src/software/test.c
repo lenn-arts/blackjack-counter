@@ -37,6 +37,8 @@ void set_value(const int value_local)
       perror("ioctl(CNN_WRITE_VAL) failed");
       return;
   }
+  printf("written:");
+  printf(value_local);
 }
 
 int main()
