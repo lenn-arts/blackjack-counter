@@ -18,7 +18,7 @@
 int cnn_fd;
 
 /* Read and print the background color */
-void print_value() {
+void print_value(void) {
   int value_local;
   
   /* behavior of ioctl defined in vga_ball.c args(file, cmd, arg) */
@@ -31,7 +31,7 @@ void print_value() {
 }
 
 /* Set the background color */
-int get_value()
+int get_value(void)
 {
   int value_local;
   if (ioctl(cnn_fd, CNN_READ_VAL, &value_local)) {
