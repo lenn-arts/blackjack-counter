@@ -56,7 +56,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned int val_arg)
 /* 1) The operations our device knows how to do (turn ioctl into file operations) */
 static const struct file_operations cnn_fops = {
 	.owner		= THIS_MODULE,
-	.unlocked_ioctl = cnn_ioctl,
+	.unlocked_ioctl = cnn_ioctl
 };
 
 /* 2) Information about our device for the "misc" framework -- like a char dev */
