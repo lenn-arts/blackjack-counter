@@ -43,7 +43,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             break;
 
         case CNN_READ_VAL:
-            printf("read")
+            //printf("read")
             //return -EINVAL;
             break;
     
