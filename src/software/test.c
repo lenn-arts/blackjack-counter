@@ -38,7 +38,7 @@ void set_value(const int value_local)
       return;
   }
   printf("written:");
-  printf("d", value_local);
+  printf("%d", value_local);
 }
 
 int main()
