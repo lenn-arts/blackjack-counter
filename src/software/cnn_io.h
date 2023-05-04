@@ -1,3 +1,6 @@
+#ifndef _VGA_BALL_H
+#define _VGA_BALL_H
+
 #include <linux/ioctl.h>
 
 
@@ -6,3 +9,5 @@
 #define MAGIC 'q'
 #define CNN_WRITE_VAL _IOW(MAGIC, 1, int)
 #define CNN_READ_VAL  _IOR(MAGIC, 2, int)
+
+#endif

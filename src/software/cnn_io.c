@@ -43,6 +43,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned int val_arg)
             break;
 
         case CNN_READ_VAL:
+            return -EINVAL;
             break;
     
         default:
