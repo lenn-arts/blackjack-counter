@@ -29,6 +29,11 @@ static void write_value(int val){
 	iowrite8(val, ADDR(dev.virtbase) );
 };
 
+static int read_value(){
+    /* ioread(adress-to-read-from)*/
+	return ioread8(ADDR(dev.virtbase));
+};
+
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     long val_local;
@@ -43,8 +48,11 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             break;
 
         case CNN_READ_VAL:
-            //printf("read")
-            //return -EINVAL;
+            int val_local;
+            if (val_local = read_value()) 
+                return -EACCESS;
+            if (copy_from_user((int *) val_arg, &val_local, sizeof(int)))
+                return -EACCES;
             break;
     
         default:

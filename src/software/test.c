@@ -31,6 +31,19 @@ void print_value() {
 }
 
 /* Set the background color */
+int get_value()
+{
+  int value_local;
+  if (ioctl(cnn_fd, CNN_READ_VAL, &value_local)) {
+      perror("ioctl(CNN_READ_VAL) failed");
+      return;
+  }
+  printf("read:");
+  printf("%d", value_local);
+  return value_local;
+};
+
+/* Send value to FPGA */
 void set_value(const int value_local)
 {
   if (ioctl(cnn_fd, CNN_WRITE_VAL, &value_local)) {
@@ -39,7 +52,7 @@ void set_value(const int value_local)
   }
   printf("written:");
   printf("%d", value_local);
-}
+};
 
 int main()
 {
