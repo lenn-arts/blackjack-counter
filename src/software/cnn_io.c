@@ -29,9 +29,9 @@ static void write_value(int val){
 	iowrite8(val, ADDR(dev.virtbase) );
 };
 
-static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned int val_arg)
+static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int val_local;
+    long val_local;
 
     switch(cmd){
         case CNN_WRITE_VAL:
@@ -43,7 +43,8 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned int val_arg)
             break;
 
         case CNN_READ_VAL:
-            return -EINVAL;
+            printf("read")
+            //return -EINVAL;
             break;
     
         default:
@@ -56,7 +57,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned int val_arg)
 /* 1) The operations our device knows how to do (turn ioctl into file operations) */
 static const struct file_operations cnn_fops = {
 	.owner		= THIS_MODULE,
-	.unlocked_ioctl = &cnn_ioctl
+	.unlocked_ioctl = cnn_ioctl
 };
 
 /* 2) Information about our device for the "misc" framework -- like a char dev */
