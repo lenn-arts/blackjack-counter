@@ -49,7 +49,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 
         case CNN_READ_VAL:
             if ((val_local = read_value()) != 0) 
-                return -EACCESS;
+                return -EACCES;
             if (copy_from_user((int *) val_arg, &val_local, sizeof(int)))
                 return -EACCES;
             break;
