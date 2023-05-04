@@ -45,6 +45,8 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned int val_arg)
         case CNN_READ_VAL:
             break;
     }
+
+    return 0;
 };
 
 /* 1) The operations our device knows how to do (turn ioctl into file operations) */
