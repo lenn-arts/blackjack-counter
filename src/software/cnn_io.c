@@ -29,7 +29,7 @@ static void write_value(int val){
 	iowrite8(val, ADDR(dev.virtbase) );
 };
 
-static int read_value(){
+static int read_value(void){
     /* ioread(adress-to-read-from)*/
 	return ioread8(ADDR(dev.virtbase));
 };
