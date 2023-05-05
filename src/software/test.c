@@ -56,26 +56,28 @@ void set_value(const int value_local)
 
 int main()
 {
-  int value_local;
-  int i;
-  static const char filename[] = "/dev/cnn_mem";
+    int value_local;
+    int i;
+    static const char filename[] = "/dev/cnn_mem";
+
+    int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 
-  printf("CNN Userspace program started\n");
+    printf("CNN Userspace program started\n");
 
-  if ( (cnn_fd = open(filename, O_RDWR)) == -1) {
+    if ( (cnn_fd = open(filename, O_RDWR)) == -1) {
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
-  }
+    }
 
-  // printf("initial state: ");
+    // printf("initial state: ");
 
-  for (i = 0 ; i < 24 ; i++) {
-    set_value(i);
+    //for (i = 0 ; i < 24 ; i++) {
+    set_value(arr);
     get_value();
     usleep(400000);
-  }
-  
-  printf("CNN Userspace program terminating\n");
-  return 0;
+    //}
+
+    printf("CNN Userspace program terminating\n");
+    return 0;
 }

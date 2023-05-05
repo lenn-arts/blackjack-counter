@@ -38,7 +38,7 @@ module cnn_mem(
 			//endcase
 
 	always_comb begin
-		val_out = ram[bandwidth:0]
+		val_out = ram[bandwidth:0];
 	end
 	       
 endmodule
