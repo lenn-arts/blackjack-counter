@@ -11,7 +11,7 @@ module cnn_mem(
 		input logic [1:0]  address,
 		input logic  	   read,
 
-		output logic [7:0] val_out); // must be multiple of 8
+		output logic [7:0] val_out); // must be multiple of 8!
 
 	reg [7:0]	value;
 	reg [16:0] params;
