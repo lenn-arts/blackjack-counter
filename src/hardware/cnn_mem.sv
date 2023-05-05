@@ -16,25 +16,29 @@ module cnn_mem(
 	reg [7:0]	value;
 	reg [16:0] params;
 	reg [16:0] img;
+	reg [256:0] ram;
+
+	localparam bandwidth = 7; // for 8 bit
 
 	always_ff @(posedge clk)
 		if (reset) begin
-			value = 8'd0;
+			ram[7:0] = 8'd0;
 		end else if (chipselect && write)
-			case (address)
-				2'h0 : 
-					value <= writedata;
-					break;
-				2'h1 : 
-					params <= writedata;
-					break;
-				2'h2:
-					img <= writedata;
-					break;
-			endcase
+			//case (address)
+			//	2'h0 : 
+			//		value <= writedata;
+			//		break;
+			//	2'h1 : 
+			//		params <= writedata;
+			//		break;
+			//	2'h2:
+			//		img <= writedata;
+			//		break;
+			ram[address+bandwidth:address] <= writedata;
+			//endcase
 
 	always_comb begin
-		val_out = value + 1;
+		val_out = ram[bandwidth:0]
 	end
 	       
 endmodule

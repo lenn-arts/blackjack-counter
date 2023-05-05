@@ -16,7 +16,7 @@
 #define DRIVER_NAME "cnn_mem"
 
 /* Device registers */
-#define ADDR(x) (x)  // local helper that maps x (address) to right bit in target space (returns new address)
+#define ADDR(x) (x+1)  // local helper that maps x (address) to right bit in target space (returns new address)
 
 struct my_comp {
     struct resource res; /* Resource: our registers */
@@ -24,25 +24,33 @@ struct my_comp {
     int value;
 } dev;
 
-static void write_value(int val){
+static void write_value(int val_addr){
     /* iowrite8(value, adress-to-write-to)*/
-	iowrite8(val, ADDR(dev.virtbase) );
+    //int addr = 0;
+    //int[] val = *val_addr
+    /* val_addr is pointer to array */
+    int max_addr = (sizeof(*val_addr)*8)/8  // sizeof gives bytes
+    for (int addr = 0; addr < max_addr; addr = addr + 8){
+	    iowrite8(val, dev.virtbase + val_addr + addr); // write 8 bits
+    }
 };
 
-static int read_value(void){
+static int read_value(void, int addr){
     /* ioread(adress-to-read-from)*/
-	return ioread8(ADDR(dev.virtbase));
+	return ioread8(dev.virtbase+addr);
 };
 
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    long val_local;
+    // new array of same size as input
+    int val_local[sizeof(val_arg)/sizeof(val_arg[0])];
 
     switch(cmd){
         case CNN_WRITE_VAL:
             /* copy_from_user(to, from, length) */
             /* copy from arg to vla (to dev.virtbase)*/
-            if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
+            //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
+            if (copy_from_user(val_local, val_arg, sizeof(int)))
                 return -EACCES;
             write_value(val_local);
             break;
@@ -51,7 +59,9 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
             val_local = read_value();
-            if (copy_to_user((int *) val_arg, &val_local, sizeof(int)))
+            //pr_info("val arg: %d", val_arg)
+            // copy from local to arg
+            if (copy_to_user(val_arg, val_local, sizeof(int)))
                 return -EACCES;
             break;
     
