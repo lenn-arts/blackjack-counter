@@ -41,7 +41,7 @@ static int read_value(int addr){
 	return ioread8(dev.virtbase+addr);
 };
 
-static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long *val_arg)
+static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     // new array of same size as input
     int val_local[sizeof(*val_arg)/sizeof(*val_arg[0])];
