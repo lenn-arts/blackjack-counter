@@ -46,7 +46,7 @@ static int read_value(int addr){
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     // new array of same size as input
-    int *arr_ptr = val_arg;
+    int (*arr_ptr)[] = val_arg;
     int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
