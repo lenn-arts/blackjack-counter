@@ -29,10 +29,12 @@ static void write_value(int val){
     //int addr = 0;
     //int[] val = *val_addr
     /* val_addr is pointer to array */
-    int vaö;
+    //int arr;
+    int adrr = 0;
     //int max_addr = (sizeof(arr)*8)/8;  // sizeof gives bytes
     //for (addr = 0; addr < max_addr; addr = addr + 8){
-    iowrite8(arr[addr], dev.virtbase + addr); // write 8 bits
+        // arr[addr]
+    iowrite8(val, dev.virtbase + addr); // write 8 bits
     //}
 };
 

@@ -73,7 +73,7 @@ int main()
     // printf("initial state: ");
 
     //for (i = 0 ; i < 24 ; i++) {
-    set_value(arr);
+    set_value(&arr);
     get_value();
     usleep(400000);
     //}
