@@ -24,18 +24,18 @@ struct my_comp {
     int value;
 } dev;
 
-static void write_value(int val){
+static void write_value(int val[]){
     /* iowrite8(value, adress-to-write-to)*/
     //int addr = 0;
     //int[] val = *val_addr
     /* val_addr is pointer to array */
     //int arr;
-    int adrr = 0;
-    //int max_addr = (sizeof(arr)*8)/8;  // sizeof gives bytes
-    //for (addr = 0; addr < max_addr; addr = addr + 8){
+    int addr = 0;
+    int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
+    for (addr = 0; addr < max_addr; addr = addr + 1){
         // arr[addr]
-    iowrite8(val, dev.virtbase + addr); // write 8 bits
-    //}
+        iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
+    }
 };
 
 static int read_value(int addr){
@@ -46,7 +46,8 @@ static int read_value(int addr){
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     // new array of same size as input
-    int (*arr_ptr)[] = val_arg;
+    int (*arr_ptr)[10] = val_arg;
+    //int (*a)[10] = l;
     int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
@@ -54,7 +55,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             /* copy_from_user(to, from, length) */
             /* copy from arg to vla (to dev.virtbase)*/
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
-            if (copy_from_user(val_local, val_arg, sizeof(int)))
+            if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
                 return -EACCES;
             write_value(val_local);
             break;
@@ -65,7 +66,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //val_local = read_value();
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
-            if (copy_to_user(val_arg, val_local, sizeof(int)))
+            if (copy_to_user((*arr_ptr), val_local, sizeof(int)))
                 return -EACCES;
             break;
     
