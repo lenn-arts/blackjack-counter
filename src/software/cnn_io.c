@@ -24,16 +24,16 @@ struct my_comp {
     int value;
 } dev;
 
-static void write_value(int arr[]){
+static void write_value(int val){
     /* iowrite8(value, adress-to-write-to)*/
     //int addr = 0;
     //int[] val = *val_addr
     /* val_addr is pointer to array */
-    int addr;
-    int max_addr = (sizeof(arr)*8)/8;  // sizeof gives bytes
-    for (addr = 0; addr < max_addr; addr = addr + 8){
-	    iowrite8(arr[addr], dev.virtbase + addr); // write 8 bits
-    }
+    int vaö;
+    //int max_addr = (sizeof(arr)*8)/8;  // sizeof gives bytes
+    //for (addr = 0; addr < max_addr; addr = addr + 8){
+    iowrite8(arr[addr], dev.virtbase + addr); // write 8 bits
+    //}
 };
 
 static int read_value(int addr){
@@ -44,7 +44,8 @@ static int read_value(int addr){
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     // new array of same size as input
-    int val_local[sizeof(*val_arg)/sizeof(*val_arg[0])];
+    int *arr_ptr = val_arg;
+    int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
         case CNN_WRITE_VAL:
