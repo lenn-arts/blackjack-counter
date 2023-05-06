@@ -44,9 +44,9 @@ int get_value(void)
 };
 
 /* Send value to FPGA */
-void set_value(const int value_local)
+void set_value(const int *value_local)
 {
-  if (ioctl(cnn_fd, CNN_WRITE_VAL, &value_local)) {
+  if (ioctl(cnn_fd, CNN_WRITE_VAL, value_local)) {
       perror("ioctl(CNN_WRITE_VAL) failed");
       return;
   }
