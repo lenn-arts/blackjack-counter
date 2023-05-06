@@ -24,18 +24,19 @@ struct my_comp {
     int value;
 } dev;
 
-static void write_value(int* val_addr){
+static void write_value(int arr[]){
     /* iowrite8(value, adress-to-write-to)*/
     //int addr = 0;
     //int[] val = *val_addr
     /* val_addr is pointer to array */
-    int max_addr = (sizeof(*val_addr)*8)/8;  // sizeof gives bytes
-    for (int addr = 0; addr < max_addr; addr = addr + 8){
-	    iowrite8(val_addr+addr, dev.virtbase + val_addr + addr); // write 8 bits
+    int addr;
+    int max_addr = (sizeof(arr)*8)/8;  // sizeof gives bytes
+    for (addr = 0; addr < max_addr; addr = addr + 8){
+	    iowrite8(arr[addr], dev.virtbase + addr); // write 8 bits
     }
 };
 
-static int read_value(void, int addr){
+static int read_value(int addr){
     /* ioread(adress-to-read-from)*/
 	return ioread8(dev.virtbase+addr);
 };
