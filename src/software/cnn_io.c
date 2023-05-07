@@ -46,7 +46,7 @@ static void write_value(int val[], int max_addr){
 // cannot return array so will return pointer to array
 static int * read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
-    static int out[max_addr-addr];
+    int out[max_addr-addr];
     int addr_local;
     for (addr_local = addr; addr_local < max_addr; addr_local = addr_local + 1){
         out[addr_local] = ioread8(dev.virtbase+addr_local);
