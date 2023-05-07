@@ -37,7 +37,7 @@ static void write_value(int16_t val[], int max_addr){
     pr_info(" val[1] t %d", (int16_t) *(val+1));
     pr_info(" val[9] %d", val[9]);
     //iowrite8(val[0], dev.virtbase); // write 8 bits
-    for (addr_local = 0; addr_local < max_addr; addr_local = addr_local +2){
+    for (addr_local = 1; addr_local < max_addr; addr_local = addr_local +2){
         // arr[addr]
        iowrite8(val[addr_local], dev.virtbase + addr_local); // write 8 bits
        pr_info("written %d to %d (%d) with size %d", val[addr_local], addr_local, dev.virtbase + addr_local, sizeof(val[addr_local]));
@@ -52,7 +52,7 @@ static int16_t* read_value(int addr, int max_addr){
     //int16_t* out_ptr = kmalloc(sizeof(int16_t)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
     static int16_t out_ptr[10];
     int addr_local;
-    for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 2){
+    for (addr_local = 1; addr_local < max_addr-addr; addr_local = addr_local + 2){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
         out_ptr[addr_local] = ioread8(dev.virtbase+addr+addr_local);
 
