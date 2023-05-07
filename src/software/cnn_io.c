@@ -24,29 +24,31 @@ struct my_comp {
     int value;
 } dev;
 
-static void write_value(int val[]){
+static void write_value(int val[], int max_addr){
     /* iowrite8(value, adress-to-write-to)*/
     //int addr = 0;
     //int[] val = *val_addr
     /* val_addr is pointer to array */
     //int arr;
     int addr = 0;
-    int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
+    //int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
     pr_info("\nmax_addr %d", max_addr);
     pr_info("\nval[0] %d", val[0]);
-    iowrite8(val[0], dev.virtbase); // write 8 bits
-    //for (addr = 0; addr < 1; addr = addr + 1){
+    //iowrite8(val[0], dev.virtbase); // write 8 bits
+    for (addr = 0; addr < max_addr; addr = addr + 1){
         // arr[addr]
-    //    iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
-    //}
-    pr_info("\nwrite_value: done iowrite");
+       iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
+    }
+    pr_info("\nKwrite_value: done iowrite");
 };
 
-static int read_value(int addr){
+static int read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
-    int out;
-    out = ioread8(dev.virtbase+addr);
-    pr_info("\nKread_value: read %d", out);
+    int out[max_addr-addr +1];
+    int addr_local;
+    for (addr_local = addr; addr_local < max_addr; addr_local = addr_local + 1){
+        out[addr_local] = ioread8(dev.virtbase+addr);
+        pr_info("\nKread_value: read %d", out);
     return out;
 };
 
@@ -65,15 +67,16 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
                 return -EACCES;
             pr_info("ictl_write: done copying");
-            write_value(val_local);
+            write_value(val_local, 10);
             pr_info("ioctl_write: done writing");
             break;
 
         case CNN_READ_VAL:
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
-            val_local[0] = read_value(0);
+            val_local = read_value();
             pr_info("ictl_reading: done reading");
+            pr_info("ictl_reading: val_local[0] %d",val_local[0]);
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
             if (copy_to_user((*arr_ptr), val_local, sizeof(int)))
