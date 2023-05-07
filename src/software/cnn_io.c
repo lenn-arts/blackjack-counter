@@ -32,19 +32,22 @@ static void write_value(int val[]){
     //int arr;
     int addr = 0;
     int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
-    pr_info("max_addr %d", max_addr);
-    pr_info("val[0] %d", val[0]);
+    pr_info("\nmax_addr %d", max_addr);
+    pr_info("\nval[0] %d", val[0]);
     iowrite8(val[0], dev.virtbase); // write 8 bits
     //for (addr = 0; addr < 1; addr = addr + 1){
         // arr[addr]
     //    iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
     //}
-    pr_info("write_value: done iowrite");
+    pr_info("\nwrite_value: done iowrite");
 };
 
 static int read_value(int addr){
     /* ioread(adress-to-read-from)*/
-	return ioread8(dev.virtbase+addr);
+    int out;
+    out = ioread8(dev.virtbase+addr);
+    pr_info("\nKread_value: read %d", out);
+    return
 };
 
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
