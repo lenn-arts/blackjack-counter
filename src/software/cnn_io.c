@@ -60,8 +60,9 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
             if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
                 return -EACCES;
-            pr_info("write: done copying");
+            pr_info("ictl_write: done copying");
             write_value(val_local);
+            pr_info("ioctl_write: done writing");
             break;
 
         case CNN_READ_VAL:
