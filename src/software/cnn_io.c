@@ -132,6 +132,7 @@ static int __init cnn_probe(struct platform_device *pdev)
 	}
         
 	/* Set an initial color */
+    pr_info("WRITING INITIAL");
     write_value(initial);
 
 	return 0;
