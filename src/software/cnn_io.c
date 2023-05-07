@@ -40,7 +40,7 @@ static void write_value(int val[], int max_addr){
     for (addr = 0; addr < max_addr; addr = addr + 1){
         // arr[addr]
        iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
-       pr_info("written %d to %d with size", val[addr], addr, sizeof(val[addr]));
+       pr_info("written %d to %d with size %d", val[addr], addr, sizeof(val[addr]));
     }
     pr_info("Kwrite_value: done iowrite");
 };
