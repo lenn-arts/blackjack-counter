@@ -51,7 +51,7 @@ static int * read_value(int addr, int max_addr){
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         out[addr_local] = ioread8(dev.virtbase+addr+addr_local);
-        pr_info("\nKread_value: read %d", out[addr_local]);
+        pr_info("Kread_value: read %d, %d", addr_local, out[addr_local]);
     }
     return out;
 };
