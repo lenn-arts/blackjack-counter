@@ -70,7 +70,8 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             /* copy from arg to vla (to dev.virtbase)*/
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
             // if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
-            for (int i = 0; i < 10; i = i+1){
+            int i = 0;
+            for (i = 0; i < 10; i = i+1){
                 if (copy_from_user(val_local[i], *(arr_ptr+i), sizeof(int)))
                     return -EACCES;
             }
