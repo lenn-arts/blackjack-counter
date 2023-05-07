@@ -33,10 +33,10 @@ void print_value(void) {
 }
 
 /* Set the background color */
-int get_value(void)
+int* get_value(void)
 {
-  int value_local;
-  if (ioctl(cnn_fd, CNN_READ_VAL, &value_local)) {
+  int* value_local;
+  if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
       perror("ioctl(CNN_READ_VAL) failed");
       return -1;
   }
