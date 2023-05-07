@@ -14,7 +14,7 @@ module cnn_mem(
 		output logic [15:0] val_out); // must be multiple of 8!
 
 	localparam bandwidth = 7; // for 8 bit
-	localparam RAM_SIZE = 256
+	localparam RAM_SIZE = 256;
 
 	reg [7:0]	value;
 	reg [15:0] params;
