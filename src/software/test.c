@@ -38,9 +38,9 @@ int get_value(void)
   int value_local;
   if (ioctl(cnn_fd, CNN_READ_VAL, &value_local)) {
       perror("ioctl(CNN_READ_VAL) failed");
-      return;
+      return -1;
   }
-  printf("\nread:");
+  printf("\nget_value(): read:");
   printf("%d", value_local);
   return value_local;
 };
