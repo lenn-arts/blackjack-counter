@@ -47,7 +47,7 @@ static int read_value(int addr){
     int out;
     out = ioread8(dev.virtbase+addr);
     pr_info("\nKread_value: read %d", out);
-    return
+    return out;
 };
 
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
