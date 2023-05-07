@@ -24,7 +24,7 @@ struct my_comp {
     int value;
 } dev;
 
-static void write_value(int16_t val[], int max_addr){
+static void write_value(int val[], int max_addr){
     /* iowrite8(value, adress-to-write-to)*/
     //int addr = 0;
     //int[] val = *val_addr
@@ -34,7 +34,7 @@ static void write_value(int16_t val[], int max_addr){
     //int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
     pr_info(" max_addr %d", max_addr);
     pr_info(" val[0] %d", val[0]);
-    pr_info(" val[1] t %d", (int16_t) *(val+1));
+    pr_info(" val[1] t %d", (int) *(val+1));
     pr_info(" val[9] %d", val[9]);
     //iowrite8(val[0], dev.virtbase); // write 8 bits
     for (addr_local = 1; addr_local < max_addr; addr_local = addr_local +1){
@@ -46,10 +46,10 @@ static void write_value(int16_t val[], int max_addr){
 };
 
 // cannot return array so will return pointer to array
-static int16_t* read_value(int addr, int max_addr){
+static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int16_t* out_ptr = kmalloc(sizeof(int16_t)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
+    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
     int addr_local;
     for (addr_local = 1; addr_local < max_addr-addr; addr_local = addr_local + 1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
@@ -65,10 +65,10 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     // new array of same size as input
     // changes
-    int16_t (*arr_ptr)[10] = val_arg; // int (*arr_ptr)[10] = val_arg;
+    int (*arr_ptr)[10] = val_arg; // int (*arr_ptr)[10] = val_arg;
     //int (*a)[10] = l;
     pr_info("iooctl: val_local size %d", sizeof(*arr_ptr)/sizeof((*arr_ptr)[0]));
-    int16_t val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
+    int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
         case CNN_WRITE_VAL:;
@@ -93,9 +93,9 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
             //int *arr_ptr_local;
-            int16_t* arr_ptr_local = read_value(0,10);
+            int* arr_ptr_local = read_value(0,10);
             pr_info("ictl_reading: done reading %d", arr_ptr_local);
-            pr_info("ictl_reading: val_local[0] %d", (int16_t) *(arr_ptr_local));
+            pr_info("ictl_reading: val_local[0] %d", (int) *(arr_ptr_local));
             pr_info("\n");
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
@@ -132,7 +132,7 @@ static struct miscdevice cnn_misc_device = {
 static int __init cnn_probe(struct platform_device *pdev)
 {
     //int initial = 0;
-    int16_t initial[] = {0};
+    int initial[] = {0};
     long initial_ptr = (long) &initial;
 	int ret;
 
