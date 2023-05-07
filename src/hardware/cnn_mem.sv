@@ -8,7 +8,7 @@ module cnn_mem(
 		input logic [7:0]  writedata, // must be multiple of 8
 		input logic 	   write,
 		input 		   		chipselect,
-		input logic [32:0]  address,
+		input logic [31:0]  address,
 		input logic  	   read,
 
 		output logic [7:0] val_out); // must be multiple of 8!
