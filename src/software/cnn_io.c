@@ -39,7 +39,7 @@ static void write_value(int val[]){
         // arr[addr]
     //    iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
     //}
-    pr_info("write_value: done iowrite")
+    pr_info("write_value: done iowrite");
 };
 
 static int read_value(int addr){
@@ -69,7 +69,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
         case CNN_READ_VAL:
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
-            val_local = read_value(0);
+            val_local[0] = read_value(0);
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
             if (copy_to_user((*arr_ptr), val_local, sizeof(int)))
