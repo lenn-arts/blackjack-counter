@@ -40,7 +40,7 @@ static void write_value(int val[], int max_addr){
     for (addr = 0; addr < max_addr; addr = addr + 1){
         // arr[addr]
        iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
-       pr_info("written %d to %d with size %d", val[addr], addr, sizeof(val[addr]));
+       pr_info("written %d to %d (%d) with size %d", val[addr], addr, dev.virtbase + addr, sizeof(val[addr]));
     }
     pr_info("Kwrite_value: done iowrite");
 };
@@ -53,7 +53,7 @@ static int* read_value(int addr, int max_addr){
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         *(out_ptr+addr_local) = ioread8(dev.virtbase+addr+addr_local);
-        pr_info("Kread_value: from %d read %d, %d, %d, %d", addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local), ioread32(dev.virtbase+addr+addr_local));
+        pr_info("Kread_value: from %d read %d, %d, %d, %d, %d", addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local), ioread32(dev.virtbase+addr+addr_local), ioread64(dev.virtbase+addr+addr_local));
     }
     pr_info("Kread_value: returning %d", out_ptr);
     return out_ptr;
