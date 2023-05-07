@@ -34,6 +34,7 @@ static void write_value(int val[], int max_addr){
     //int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
     pr_info("\nmax_addr %d", max_addr);
     pr_info("\nval[0] %d", val[0]);
+    pr_info("\nval[9] %d", val[9]);
     //iowrite8(val[0], dev.virtbase); // write 8 bits
     for (addr = 0; addr < max_addr; addr = addr + 1){
         // arr[addr]
@@ -45,11 +46,11 @@ static void write_value(int val[], int max_addr){
 // cannot return array so will return pointer to array
 static int * read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
-    int out[max_addr-addr +1];
+    static int out[max_addr-addr];
     int addr_local;
     for (addr_local = addr; addr_local < max_addr; addr_local = addr_local + 1){
-        out[addr_local] = ioread8(dev.virtbase+addr);
-        pr_info("\nKread_value: read %d", out);
+        out[addr_local] = ioread8(dev.virtbase+addr_local);
+        pr_info("\nKread_value: read %d", out[addr_local]);
     }
     return out;
 };
