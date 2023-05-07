@@ -34,7 +34,7 @@ static void write_value(int val[], int max_addr){
     //int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
     pr_info(" max_addr %d", max_addr);
     pr_info(" val[0] %d", val[0]);
-    pr_info(" val[1] %d", *(val+1));
+    pr_info(" val[1] t %d", (int16_t) *(val+1));
     pr_info(" val[9] %d", val[9]);
     //iowrite8(val[0], dev.virtbase); // write 8 bits
     for (addr = 0; addr < max_addr; addr = addr + 1){
@@ -49,11 +49,11 @@ static void write_value(int val[], int max_addr){
 static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
+    int* out_ptr = kmalloc(sizeof(int16_t)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         *(out_ptr+addr_local) = (int16_t)ioread16(dev.virtbase+addr+addr_local);
-        pr_info("Kread_value: read %d, %d", addr_local, *(out_ptr+addr_local));
+        pr_info("Kread_value: from %d read %d, %d", addr_local, *(out_ptr+addr_local), ioread16(dev.virtbase+addr+addr_local));
     }
     pr_info("Kread_value: returning %d", out_ptr);
     return out_ptr;
