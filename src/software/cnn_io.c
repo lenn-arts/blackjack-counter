@@ -65,7 +65,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
     int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
-        case CNN_WRITE_VAL:
+        case CNN_WRITE_VAL:;
             /* copy_from_user(to, from, length) */
             /* copy from arg to vla (to dev.virtbase)*/
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
