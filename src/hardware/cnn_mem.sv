@@ -20,12 +20,11 @@ module cnn_mem(
 	reg [15:0] params;
 	reg [15:0] img;
 	reg [15:0] ram[RAM_SIZE-1:0]; // RAM: 256 slots each with 16 bit
-
+	genvar j;
 	
 
 	always_ff @(posedge clk) begin
 		if (reset) begin
-			genvar j;
 			for(j = 0; j < RAM_SIZE; j = j+1)
 				ram[j] = 16'd0;
 			//ram[255:0] = 256'd0;
