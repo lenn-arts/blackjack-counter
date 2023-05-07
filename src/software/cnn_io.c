@@ -54,7 +54,7 @@ static int16_t* read_value(int addr, int max_addr){
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
-        out_ptr[addr_local] = ioread16(dev.virtbase+addr+addr_local);
+        out_ptr[addr_local] = ioread16(dev.virtbase+addr+addr_local*4);
 
         pr_info("Kread_value: from %d (%d) read %d, %d, %d", addr_local, dev.virtbase+addr+addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local));
     }
