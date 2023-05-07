@@ -49,7 +49,7 @@ static void write_value(int val[], int max_addr){
 static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = malloc(sizeof(int)*(max_addr-addr)); // dynamic allocation
+    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr)); // dynamic allocation
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         *(out_ptr+addr_local) = ioread8(dev.virtbase+addr+addr_local);
@@ -98,7 +98,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             // copy from local to arg
             if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local)))
                 return -EACCES;
-            free(arr_ptr_local);
+            kfree(arr_ptr_local);
             break;
     
         default:
