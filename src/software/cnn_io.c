@@ -32,7 +32,9 @@ static void write_value(int val[]){
     //int arr;
     int addr = 0;
     int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
-    for (addr = 0; addr < max_addr; addr = addr + 1){
+    pr_info("max_addr %d", max_addr);
+    pr_info("val[0] %d", val[0]);
+    for (addr = 0; addr < 1; addr = addr + 1){
         // arr[addr]
         iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
     }
@@ -57,6 +59,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
             if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
                 return -EACCES;
+            pr_info("write: done copying");
             write_value(val_local);
             break;
 
