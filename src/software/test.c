@@ -62,7 +62,7 @@ int main()
     int i;
     static const char filename[] = "/dev/cnn_mem";
 
-    int arr[] = {3,3,3,3,3,3,3,3,3,3};
+    int16_t arr[] = {3,3,3,3,3,3,3,3,3,3};
 
 
     printf("CNN Userspace program started\n");
