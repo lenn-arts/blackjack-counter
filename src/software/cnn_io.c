@@ -97,7 +97,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             pr_info("\n");
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
-            if (copy_to_user(arr_ptr, arr_ptr_local, 10*sizeof(int)))
+            if (copy_to_user(arr_ptr, arr_ptr_local, 9*sizeof(int)))
                 return -EACCES;
             //kfree(arr_ptr_local);
             break;
