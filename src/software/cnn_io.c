@@ -48,14 +48,15 @@ static void write_value(int val[], int max_addr){
 // cannot return array so will return pointer to array
 static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
-    static int out[max_addr-addr];
+    //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
+    int* out_ptr = malloc(sizeof(int)*(max_addr-addr)); // dynamic allocation
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
-        out[addr_local] = ioread8(dev.virtbase+addr+addr_local);
-        pr_info("Kread_value: read %d, %d", addr_local, out[addr_local]);
+        *(out_ptr+addr_local) = ioread8(dev.virtbase+addr+addr_local);
+        pr_info("Kread_value: read %d, %d", addr_local, *(out+addr_local));
     }
-    pr_info("Kread_value: returning %d", out);
-    return out;
+    pr_info("Kread_value: returning %d", out_ptr);
+    return out_ptr;
 };
 
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
@@ -95,7 +96,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             pr_info("ictl_reading: val_local[0] %d", *(arr_ptr_local));
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
-            if (copy_to_user((*arr_ptr), arr_ptr_local, sizeof(int)))
+            if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local)))
                 return -EACCES;
             break;
     
