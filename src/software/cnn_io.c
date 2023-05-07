@@ -130,7 +130,7 @@ static struct miscdevice cnn_misc_device = {
 static int __init cnn_probe(struct platform_device *pdev)
 {
     //int initial = 0;
-    int initial[] = {0};
+    int16_t initial[] = {0};
     long initial_ptr = (long) &initial;
 	int ret;
 
