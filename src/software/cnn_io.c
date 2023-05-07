@@ -34,6 +34,7 @@ static void write_value(int val[]){
     int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
     pr_info("max_addr %d", max_addr);
     pr_info("val[0] %d", val[0]);
+    iowrite8(val[0], dev.virtbase); // write 8 bits
     //for (addr = 0; addr < 1; addr = addr + 1){
         // arr[addr]
     //    iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
@@ -100,7 +101,9 @@ static struct miscdevice cnn_misc_device = {
 // 3.1) setup/register device
 static int __init cnn_probe(struct platform_device *pdev)
 {
-    int initial = 0;
+    //int initial = 0;
+    int initial[] = {0};
+    long initial_ptr = (long) &initial;
 	int ret;
 
 	/* Register ourselves as a misc device: creates /dev/vga_ball */

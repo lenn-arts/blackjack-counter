@@ -25,9 +25,11 @@ void print_value(void) {
   /* this writes the color of the background from &vla */
   if (ioctl(cnn_fd, CNN_READ_VAL, &value_local)) {
       perror("ioctl(CNN_WRITE_VAL) failed");
-      return;
+      goto end;
   }
   printf("%d", value_local);
+
+  end:;
 }
 
 /* Set the background color */
@@ -51,7 +53,7 @@ void set_value(const int *value_local)
       return;
   }
   printf("\nwritten:");
-  printf("%d", value_local);
+  printf("%d", (int) value_local);
 };
 
 int main()
