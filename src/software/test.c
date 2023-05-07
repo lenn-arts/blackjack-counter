@@ -33,9 +33,9 @@ void print_value(void) {
 }
 
 /* Set the background color */
-int* get_value(void)
+int16_t* get_value(void)
 {
-  int* value_local;
+  int16_t* value_local;
   if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
       perror("ioctl(CNN_READ_VAL) failed");
       return -1;
@@ -62,7 +62,7 @@ int main()
     int i;
     static const char filename[] = "/dev/cnn_mem";
 
-    int arr[] = {3,3,3,3,3,3,3,3,3,3};
+    int16_t arr[] = {3,3,3,3,3,3,3,3,3,3};
 
 
     printf("CNN Userspace program started\n");
@@ -78,7 +78,7 @@ int main()
     long arr_ptr = (long) arr; // &arr
     printf("\nU arr_ptr: %d", arr_ptr);
     set_value(arr_ptr);
-    int* ptr = get_value();
+    int16_t* ptr = get_value();
     printf("main: got value %d", ptr);
     usleep(400000);
     //}
