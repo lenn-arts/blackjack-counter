@@ -41,7 +41,7 @@ static void write_value(int val[], int max_addr){
         // arr[addr]
        iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
     }
-    pr_info("\nKwrite_value: done iowrite");
+    pr_info("Kwrite_value: done iowrite");
 };
 
 // cannot return array so will return pointer to array
@@ -75,7 +75,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             for (i = 0; i < 10; i = i+1){
                 if (copy_from_user(val_local+i, arr_ptr+i, sizeof(int)))
                     return -EACCES;
-                pr_info("ictl_write val_local[%d]: %d", i, *(val_local+i), val_local[i]);
+                pr_info("ictl_write val_local[%d]: %d , %d", i, *(val_local+i), val_local[i]);
             }
             pr_info("ictl_write: done copying");
             write_value(val_local, 10);
