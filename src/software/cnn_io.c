@@ -73,6 +73,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
             val_local[0] = read_value(0);
+            pr_info("ictl_reading: done reading");
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
             if (copy_to_user((*arr_ptr), val_local, sizeof(int)))

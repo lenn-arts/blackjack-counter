@@ -40,7 +40,7 @@ int get_value(void)
       perror("ioctl(CNN_READ_VAL) failed");
       return -1;
   }
-  printf("\nget_value(): read:");
+  printf("\nUget_value: read:");
   printf("%d", value_local);
   return value_local;
 };
@@ -52,7 +52,7 @@ void set_value(const int *value_local)
       perror("ioctl(CNN_WRITE_VAL) failed");
       return;
   }
-  printf("\nwritten:");
+  printf("\nUwrite_value: written:");
   printf("%d", (int) value_local);
 };
 
