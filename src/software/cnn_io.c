@@ -34,7 +34,7 @@ static void write_value(int val[], int max_addr){
     //int max_addr = (sizeof(val)*8)/8;  // sizeof gives bytes
     pr_info("\nmax_addr %d", max_addr);
     pr_info("\nval[0] %d", val[0]);
-    pr_info(" val[1] %d", val[1]);
+    pr_info(" val[1] %d", *(val+1));
     pr_info(" val[9] %d", val[9]);
     //iowrite8(val[0], dev.virtbase); // write 8 bits
     for (addr = 0; addr < max_addr; addr = addr + 1){
