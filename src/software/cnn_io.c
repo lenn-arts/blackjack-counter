@@ -53,7 +53,7 @@ static int* read_value(int addr, int max_addr){
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         *(out_ptr+addr_local) = ioread8(dev.virtbase+addr+addr_local);
-        pr_info("Kread_value: from %d read %d, %d, %d, %d, %d", addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local), ioread32(dev.virtbase+addr+addr_local));
+        pr_info("Kread_value: from %d (%d) read %d, %d, %d, %d, %d", addr_local, dev.virtbase+addr, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local), ioread32(dev.virtbase+addr+addr_local));
     }
     pr_info("Kread_value: returning %d", out_ptr);
     return out_ptr;
