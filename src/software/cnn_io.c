@@ -73,7 +73,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             pr_info("ioctl_write: done writing");
             break;
 
-        case CNN_READ_VAL:
+        case CNN_READ_VAL:;
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
             int *arr_ptr_local;
