@@ -25,6 +25,7 @@ module cnn_mem(
 
 	always_ff @(posedge clk) begin
 		if (reset) begin
+			genvar j;
 			for(j = 0; j < RAM_SIZE; j = j+1)
 				ram[j] = 16'd0;
 			//ram[255:0] = 256'd0;
