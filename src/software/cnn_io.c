@@ -49,10 +49,10 @@ static void write_value(int val[], int max_addr){
 static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = kmalloc(sizeof(int8_t)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
+    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
-        *(out_ptr+addr_local) = (int8_t) ioread8((int16_t)(dev.virtbase+addr+addr_local));
+        *(out_ptr+addr_local) = ioread8((int16_t)(dev.virtbase+addr+addr_local));
         pr_info("Kread_value: from %d read %d, %d, %d, %d, %d", addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local), ioread32(dev.virtbase+addr+addr_local));
     }
     pr_info("Kread_value: returning %d", out_ptr);
