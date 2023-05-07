@@ -62,6 +62,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
     // changes
     int (*arr_ptr)[10] = val_arg; // int (*arr_ptr)[10] = val_arg;
     //int (*a)[10] = l;
+    pr_info("iooctl: val_local size %d", sizeof(*arr_ptr)/sizeof((*arr_ptr)[0]));
     int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
