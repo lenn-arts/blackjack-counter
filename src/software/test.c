@@ -75,7 +75,7 @@ int main()
     // printf("initial state: ");
 
     //for (i = 0 ; i < 24 ; i++) {
-    long arr_ptr = (long) &arr;
+    long arr_ptr = (long) arr;
     set_value(arr_ptr);
     get_value();
     usleep(400000);
