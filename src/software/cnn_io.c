@@ -40,12 +40,13 @@ static void write_value(int val[], int max_addr){
     for (addr = 0; addr < max_addr; addr = addr + 1){
         // arr[addr]
        iowrite8(val[addr], dev.virtbase + addr); // write 8 bits
+       pr_info("written %d to %d", val[addr], addr);
     }
     pr_info("Kwrite_value: done iowrite");
 };
 
 // cannot return array so will return pointer to array
-static int * read_value(int addr, int max_addr){
+static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     int out[max_addr-addr];
     int addr_local;
