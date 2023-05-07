@@ -62,7 +62,7 @@ int main()
     int i;
     static const char filename[] = "/dev/cnn_mem";
 
-    int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int arr[] = { 2, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 
     printf("CNN Userspace program started\n");
@@ -75,7 +75,8 @@ int main()
     // printf("initial state: ");
 
     //for (i = 0 ; i < 24 ; i++) {
-    long arr_ptr = (long) arr;
+    long arr_ptr = (long) arr; // &arr
+    printf("\nU arr_ptr: %d", arr_ptr);
     set_value(arr_ptr);
     get_value();
     usleep(400000);
