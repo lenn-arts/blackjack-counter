@@ -42,7 +42,8 @@ static void write_value(int val[], int max_addr){
     pr_info("\nKwrite_value: done iowrite");
 };
 
-static int[] read_value(int addr, int max_addr){
+// cannot return array so will return pointer to array
+static int * read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     int out[max_addr-addr +1];
     int addr_local;
@@ -75,12 +76,13 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
         case CNN_READ_VAL:
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
-            val_local = read_value(0,10);
+            int *arr_ptr_local;
+            arr_ptr_local = read_value(0,10);
             pr_info("ictl_reading: done reading");
-            pr_info("ictl_reading: val_local[0] %d",val_local[0]);
+            pr_info("ictl_reading: val_local[0] %d",*(arr_ptr_local));
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
-            if (copy_to_user((*arr_ptr), val_local, sizeof(int)))
+            if (copy_to_user((*arr_ptr), arr_ptr_local, sizeof(int)))
                 return -EACCES;
             break;
     
