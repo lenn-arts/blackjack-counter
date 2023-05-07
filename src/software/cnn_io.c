@@ -75,7 +75,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             for (i = 0; i < 10; i = i+1){
                 if (copy_from_user(val_local+i, arr_ptr+i, sizeof(int)))
                     return -EACCES;
-                pr_info("ictl_write val_local[%d]: %d , %d \t arr_ptr", i, *(val_local+i), val_local[i], *(arr_ptr+i), arr_ptr[i];
+                pr_info("ictl_write val_local[%d]: %d , %d \t arr_ptr", i, *(val_local+i), val_local[i], *(arr_ptr+i), arr_ptr[i]);
             }
             pr_info("ictl_write: done copying");
             write_value(val_local, 10);
