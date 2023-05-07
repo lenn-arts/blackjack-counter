@@ -40,7 +40,7 @@ int* get_value(void)
       perror("ioctl(CNN_READ_VAL) failed");
       return -1;
   }
-  printf("\nUget_value: ptr: %d \t ptr[0]: %d", *(value_local));
+  printf("\nUget_value: ptr: %d \t ptr[0]: %d", value_local, *(value_local));
   //printf("%d", value_local);
   return value_local;
 };
@@ -79,7 +79,7 @@ int main()
     printf("\nU arr_ptr: %d", arr_ptr);
     set_value(arr_ptr);
     int* ptr = get_value();
-    ("main: got value %d", ptr);
+    printf("main: got value %d", ptr);
     usleep(400000);
     //}
 
