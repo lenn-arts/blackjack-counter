@@ -68,7 +68,8 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             /* copy_from_user(to, from, length) */
             /* copy from arg to vla (to dev.virtbase)*/
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
-            if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
+            // if (copy_from_user(val_local, (*arr_ptr), sizeof(int)))
+            if (copy_from_user(val_local, arr_ptr, sizeof(int)))
                 return -EACCES;
             pr_info("ictl_write: done copying");
             write_value(val_local, 10);
@@ -81,7 +82,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             int *arr_ptr_local;
             arr_ptr_local = read_value(0,10);
             pr_info("ictl_reading: done reading");
-            pr_info("ictl_reading: val_local[0] %d",*(arr_ptr_local));
+            pr_info("ictl_reading: val_local[0] %d", *(arr_ptr_local));
             //pr_info("val arg: %d", val_arg)
             // copy from local to arg
             if (copy_to_user((*arr_ptr), arr_ptr_local, sizeof(int)))
