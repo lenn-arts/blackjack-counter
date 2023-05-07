@@ -42,7 +42,7 @@ static void write_value(int val[], int max_addr){
     pr_info("\nKwrite_value: done iowrite");
 };
 
-static int read_value(int addr, int max_addr){
+static int[] read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     int out[max_addr-addr +1];
     int addr_local;
