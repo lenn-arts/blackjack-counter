@@ -78,7 +78,7 @@ int main()
     long arr_ptr = (long) arr; // &arr
     printf("\nU arr_ptr: %d", arr_ptr);
     set_value(arr_ptr);
-    int* ptr = get_value();
+    int16_t* ptr = get_value();
     printf("main: got value %d", ptr);
     usleep(400000);
     //}
