@@ -5,24 +5,29 @@
 module cnn_mem(
 		input logic        clk,
 	    input logic 	   reset,
-		input logic [7:0]  writedata, // must be multiple of 8
+		input logic [15:0]  writedata, // must be multiple of 8
 		input logic 	   write,
 		input 		   		chipselect,
 		input logic [15:0]  address,
 		input logic  	   read,
 
-		output logic [7:0] val_out); // must be multiple of 8!
+		output logic [15:0] val_out); // must be multiple of 8!
+
+	localparam bandwidth = 7; // for 8 bit
+	localparam RAM_SIZE = 256
 
 	reg [7:0]	value;
 	reg [15:0] params;
 	reg [15:0] img;
-	reg [255:0] ram;
+	reg [15:0] ram[RAM_SIZE-1:0]; // RAM: 256 slots each with 16 bit
 
-	localparam bandwidth = 7; // for 8 bit
+	
 
 	always_ff @(posedge clk) begin
 		if (reset) begin
-			ram[255:0] = 256'd0;
+			for(j = 0; j < RAM_SIZE; j = j+1)
+				ram[j] = 16'd0;
+			//ram[255:0] = 256'd0;
 		end else if (chipselect && write) begin
 			//case (address)
 			//	2'h0 : 
