@@ -2,7 +2,7 @@
  * custom peripheral
  */
 
-module SimpleLayer layer(
+module SimpleLayer(
 		input logic clk,
 		input logic start,
 		input logic data_in,
