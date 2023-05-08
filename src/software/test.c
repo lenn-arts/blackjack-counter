@@ -46,14 +46,23 @@ int* get_value(void)
 };
 
 /* Send value to FPGA */
-void set_value(const int *value_local)
+void set_value(const int *value_local, int target)
 {
-  if (ioctl(cnn_fd, CNN_WRITE_VAL, value_local)) {
-      perror("ioctl(CNN_WRITE_VAL) failed");
-      return;
-  }
-  printf("\nUwrite_value: written:");
-  printf("%d", (int) value_local);
+    switch (target)
+    {
+    case 0:
+        if (ioctl(cnn_fd, CNN_WRITE_VAL, value_local)) {
+            perror("ioctl(CNN_WRITE_VAL) failed");
+            return;
+        }
+        break;
+    
+    default:
+        break;
+    }
+    
+    printf("\nUwrite_value: written:");
+    printf("%d", (int) value_local);
 };
 
 int main()
@@ -62,7 +71,16 @@ int main()
     int i;
     static const char filename[] = "/dev/cnn_mem";
 
-    int arr[] = {3,3,3,3,3,3,3,3,3,3};
+    int img[] = {3,3,3,3,3,3,3,3,3,3};
+    int i;  // Loop variable
+    for (i = 0; i < 255; i=i+1) // Using for loop we are initializing
+    {
+        img[i] = i;
+    }
+
+    int weights_l1 = {0};
+    int weights_l2 = {0};
+    int weights_l3 = {0};
 
 
     printf("CNN Userspace program started\n");
@@ -75,9 +93,9 @@ int main()
     // printf("initial state: ");
 
     //for (i = 0 ; i < 24 ; i++) {
-    long arr_ptr = (long) arr; // &arr
+    long arr_ptr = (long) img; // &arr
     printf("\nU arr_ptr: %d", arr_ptr);
-    set_value(arr_ptr);
+    set_value(arr_ptr, 0);
     int* ptr = get_value();
     printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
