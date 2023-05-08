@@ -63,7 +63,7 @@ static int* read_value(int addr, int max_addr){
 
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int size = 130;
+    int size = 255;
     // new array of same size as input
     // changes
     int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
