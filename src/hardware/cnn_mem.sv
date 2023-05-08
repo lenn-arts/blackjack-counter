@@ -56,8 +56,8 @@ module cnn_mem(
 	logic [15:0] output_limit = 0;
 
 
-	reg [7:0] input[100*100-1:0]; // input of every layer, max size: input image
-	reg [7:0] output[32*32*16-1:0]; // output of every layer, max size: layer 2 output
+	reg [7:0] input_dat[100*100-1:0]; // input of every layer, max size: input image
+	reg [7:0] output_dat[32*32*16-1:0]; // output of every layer, max size: layer 2 output
 	reg [7:0] wlayer1_conv[5*5*1*16-1:0]; // weights per layer
 	reg [7:0] wlayer2_conv[5*5*16*32-1:0];
 	reg [7:0] wlayer3_fc[1152*200-1:0];
@@ -86,7 +86,7 @@ module cnn_mem(
 			//ram[address] <= writedata;
 			case(address):
 				4'd0: begin
-					input[input_addr] <= writedata;
+					input_dat[input_addr] <= writedata;
 					input_addr <= input_addr +1;
 					if input_addr >= input_size begin
 						input_loaded = 1;
@@ -143,7 +143,7 @@ module cnn_mem(
 
 		// READING
 		end else if (chipselect && read) begin
-			val_out <= output[address];
+			val_out <= output_dat[address];
 		end
 	end
 
@@ -151,7 +151,7 @@ module cnn_mem(
 	/*SimpleLayer layer1_conv(
 		.clk(clk),
 		.start(start_l1),
-		.data_in(input),
+		.data_in(input_dat),
 		.weights(wlayer1_conv),
 		.data_out(output)
 	);
@@ -159,7 +159,7 @@ module cnn_mem(
 	SimpleLayer layer2_conv(
 		.clk(clk),
 		.start(start_l2),
-		.data_in(input),
+		.data_in(input_dat),
 		.weights(wlayer2_conv),
 		.data_out(output)
 	);
@@ -167,7 +167,7 @@ module cnn_mem(
 	SimpleLayer layer3_fc(
 		.clk(clk),
 		.start(start_l3),
-		.data_in(input),
+		.data_in(input_dat),
 		.weights(wlayer3_conv),
 		.data_out(output)
 	);
@@ -175,7 +175,7 @@ module cnn_mem(
 	SimpleLayer layer4_fc(
 		.clk(clk),
 		.start(start_l4),
-		.data_in(input),
+		.data_in(input_dat),
 		.weights(wlayer4_conv),
 		.data_out(output)
 	);*/
