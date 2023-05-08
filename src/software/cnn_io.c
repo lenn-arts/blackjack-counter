@@ -39,7 +39,7 @@ static void write_value(int val[], int max_addr){
     //iowrite8(val[0], dev.virtbase); // write 8 bits
     for (addr_local = 0; addr_local < max_addr; addr_local = addr_local +1){
         // arr[addr]
-       iowrite8(val[addr_local], dev.virtbase + addr_local*2); // write 8 bits
+       iowrite16(val[addr_local], dev.virtbase + addr_local*4); // write 8 bits
        pr_info("written %d to %d (%d) with size %d", val[addr_local], addr_local, dev.virtbase + addr_local, sizeof(val[addr_local]));
     }
     pr_info("Kwrite_value: done iowrite");
@@ -53,7 +53,7 @@ static int* read_value(int addr, int max_addr){
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
-        *(out_ptr+addr_local) = (int) ioread8(dev.virtbase+addr+addr_local*2);
+        *(out_ptr+addr_local) = (int) ioread16(dev.virtbase+addr+addr_local*4);
 
         pr_info("Kread_value: from %d (%d) read %d, %d, %d", addr_local, dev.virtbase+addr+addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local));
     }
