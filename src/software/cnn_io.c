@@ -46,10 +46,10 @@ static void write_value(int val[], int max_addr){
 };
 
 // cannot return array so will return pointer to array
-static int* read_value(int addr, int max_addr){
+static int16_t* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = kmalloc(sizeof(int16_t)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
+    int16_t* out_ptr = kmalloc(sizeof(int16_t)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
     int addr_local;
     for (addr_local = 1; addr_local < max_addr-addr; addr_local = addr_local + 1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
@@ -93,7 +93,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
             //int *arr_ptr_local;
-            int* arr_ptr_local = read_value(0,10);
+            int16_t* arr_ptr_local = read_value(0,10);
             pr_info("ictl_reading: done reading %d", arr_ptr_local);
             pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), arr_ptr_local[0]);
             pr_info("\n");
