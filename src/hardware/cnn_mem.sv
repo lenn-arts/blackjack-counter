@@ -88,27 +88,27 @@ module cnn_mem(
 	logic [7:0] input_mem_in;
 	logic [7:0] input_mem_out;
 	logic input_mem_we;
-	memory #(input_size, ADDR_SIZE) input_mem(.clk(clk), .write_enable(input_mem_we), .address(input_addr), .data_in(input_mem_in),.data_out(input_mem_out));
+	memory #(input_size, ADDR_SIZE) input_mem(.clk(clk), .write_enable(input_mem_we), .addr(input_addr), .data_in(input_mem_in),.data_out(input_mem_out));
 	
 	logic [7:0] l1_mem_in;
 	logic [7:0] l1_mem_out;
 	logic l1_mem_we;
-	memory #(l1_size, ADDR_SIZE) l1_mem(.clk(clk), .write_enable(l1_mem_we), .address(l1_addr), .data_in(l1_mem_in),.data_out(l1_mem_out));
+	memory #(l1_size, ADDR_SIZE) l1_mem(.clk(clk), .write_enable(l1_mem_we), .addr(l1_addr), .data_in(l1_mem_in),.data_out(l1_mem_out));
 
 	logic [7:0] l2_mem_in;
 	logic [7:0] l2_mem_out;
 	logic l2_mem_we;
-	memory #(l2_size, ADDR_SIZE) l2_mem(.clk(clk), .write_enable(l2_mem_we), .address(l2_addr), .data_in(l2_mem_in),.data_out(l2_mem_out));
+	memory #(l2_size, ADDR_SIZE) l2_mem(.clk(clk), .write_enable(l2_mem_we), .addr(l2_addr), .data_in(l2_mem_in),.data_out(l2_mem_out));
 
 	logic [7:0] l3_mem_in;
 	logic [7:0] l3_mem_out;
 	logic l3_mem_we;
-	memory #(l3_size, ADDR_SIZE) l3_mem(.clk(clk), .write_enable(l3_mem_we), .address(l3_addr), .data_in(l3_mem_in),.data_out(l3_mem_out));
+	memory #(l3_size, ADDR_SIZE) l3_mem(.clk(clk), .write_enable(l3_mem_we), .addr(l3_addr), .data_in(l3_mem_in),.data_out(l3_mem_out));
 
 	logic [7:0] l4_mem_in;
 	logic [7:0] l4_mem_out;
 	logic l4_mem_we;
-	memory #(l4_size, ADDR_SIZE) l4_mem(.clk(clk), .write_enable(l4_mem_we), .address(l4_addr), .data_in(l4_mem_in),.data_out(l4_mem_out));
+	memory #(l4_size, ADDR_SIZE) l4_mem(.clk(clk), .write_enable(l4_mem_we), .addr(l4_addr), .data_in(l4_mem_in),.data_out(l4_mem_out));
 
 	/*reg [7:0] input_dat[100*100-1:0]; // input of every layer, max size: input image
 	reg [7:0] output_dat[32*32*16-1:0]; // output of every layer, max size: layer 2 output
