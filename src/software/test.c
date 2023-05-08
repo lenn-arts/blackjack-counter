@@ -80,6 +80,7 @@ int main()
     set_value(arr_ptr);
     int* ptr = get_value();
     printf("main: got value %d", ptr);
+    printf("main: got value %d", ptr[0]);
     usleep(400000);
     //}
 
