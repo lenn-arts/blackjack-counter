@@ -90,6 +90,11 @@ module cnn_mem(
 	logic input_mem_we;
 	memory #(input_size, ADDR_SIZE) input_mem(.clk(clk), .write_enable(input_mem_we), .addr(input_addr), .data_in(input_mem_in),.data_out(input_mem_out));
 	
+	logic [7:0] output_mem_in;
+	logic [7:0] output_mem_out;
+	logic output_mem_we;
+	memory #(output_size, ADDR_SIZE) output_mem(.clk(clk), .write_enable(output_mem_we), .addr(output_addr), .data_in(output_mem_in),.data_out(output_mem_out));
+
 	logic [7:0] l1_mem_in;
 	logic [7:0] l1_mem_out;
 	logic l1_mem_we;
@@ -227,7 +232,8 @@ module cnn_mem(
 
 		// READING
 		end else if (chipselect && read) begin
-			val_out <= output_dat[address];
+			output_addr = address;
+			val_out <= output_mem_out;
 		end
 	end
 
