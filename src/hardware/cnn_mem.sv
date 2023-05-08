@@ -5,43 +5,38 @@
 module cnn_mem(
 		input logic        clk,
 	    input logic 	   reset,
-		input logic [15:0]  writedata, // must be multiple of 8
+		input logic [7:0]  writedata, // must be multiple of 8
 		input logic 	   write,
 		input 		   		chipselect,
-		input logic [15:0]  address,
+		input logic [18:0]  address,
 		input logic  	   read,
 
-		output logic [15:0] val_out); // must be multiple of 8!
+		output logic [7:0] val_out); // must be multiple of 8!
 
 	localparam bandwidth = 7; // for 8 bit
-	localparam RAM_SIZE = 256;
+	localparam RAM_SIZE = 375000; // 300kbit
+	localparam NUM_LAYERS = 5;
 
-	reg [7:0]	value;
-	reg [15:0] params;
-	reg [15:0] img;
-	reg [15:0] ram[RAM_SIZE-1:0]; // RAM: 256 slots each with 16 bit
-	//genvar j;
-	
+	reg [7:0] img[100*100-1:0];
+	reg [7:0] ram[RAM_SIZE-1:0]; // RAM: n slots each with 8 bit
+	//reg [8:0] ram_fc[RAM_SIZE-1:0];
+
+	reg [18:0] start_adresses[NUM_LAYERS-1:0]; // for all layers + img
+	reg [18:0] end_adresses[NUM_LAYERS-1:0]; // for all layers + img
+	reg [NUM_LAYERS-1:0] present; // whether in memory
+
+	// idea: for every layer have own RAM + input + output
+	// use address to decide to which to write
+	// use end_address to determine where content stops for over-size rams (such as output, which will get smaller every layer)
 
 	always_ff @(posedge clk) begin
 		if (reset) begin
 			for(int j = 0; j < RAM_SIZE; j = j+1)
-				ram[j] = 16'd0;
-			//ram[255:0] = 256'd0;
+				ram[j] = 8'd0;
+			for (int j = 0; j < NUM_LAYERS; j = j+1)
+				present[j] = 1'b0;
 		end else if (chipselect && write) begin
-			//case (address)
-			//	2'h0 : 
-			//		value <= writedata;
-			//		break;
-			//	2'h1 : 
-			//		params <= writedata;
-			//		break;
-			//	2'h2:
-			//		img <= writedata;
-			//		break;
-			//ram[address+bandwidth:address] <= writedata;
 			ram[address] <= writedata;
-			//endcase
 		end else if (chipselect && read) begin
 			val_out <= ram[address];
 		end
