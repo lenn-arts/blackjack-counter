@@ -7,8 +7,8 @@ module SimpleLayer(
 		input logic start,
 		input logic data_in,
 		input logic weights,
-		output logic data_out, 
-);
+		
+		output logic data_out);
 
 	assign data_out = data_in;
 endmodule
