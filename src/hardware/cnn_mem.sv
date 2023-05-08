@@ -54,6 +54,7 @@ module cnn_mem(
 	localparam ADDR_SIZE = 19;
 
 	localparam input_size = 100*100; 
+	localparam output_size = 32*32*16;
 	localparam l1_size = 5*5*1*16;
 	localparam l2_size = 5*5*16*32;
 	localparam l3_size = 1152*200;
