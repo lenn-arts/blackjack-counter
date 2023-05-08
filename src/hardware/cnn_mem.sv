@@ -88,7 +88,7 @@ module cnn_mem(
 				4'd0: begin
 					input_dat[input_addr] <= writedata;
 					input_addr <= input_addr +1;
-					if input_addr >= input_size begin
+					if (input_addr > input_size -1) begin
 						input_loaded = 1;
 					end
 				end
@@ -96,7 +96,7 @@ module cnn_mem(
 				4'd1: begin
 					wlayer1_conv[l1_addr] <= writedata;
 					l1_addr <= l1_addr +1;
-					if l1_addr >= l1_size begin
+					if (l1_addr > l1_size -1) begin
 						l1_loaded = 1;
 					end
 				end
@@ -104,7 +104,7 @@ module cnn_mem(
 				4'd2: begin
 					wlayer2_conv[l2_addr] <= writedata;
 					l2_addr <= l2_addr +1;
-					if l2_addr >= l2_size begin
+					if (l2_addr > l2_size -1) begin
 						l2_loaded = 1;
 					end
 				end
@@ -112,7 +112,7 @@ module cnn_mem(
 				4'd3: begin
 					wlayer3_fc[l3_addr] <= writedata;
 					l3_addr <= l3_addr +1;
-					if l3_addr >= l3_size begin
+					if (l3_addr > l3_size -1) begin
 						l3_loaded = 1;
 					end
 				end   
@@ -120,13 +120,15 @@ module cnn_mem(
 				4'd4: begin
 					wlayer4_fc[l4_addr] <= writedata;
 					l4_addr <= l4_addr +1;
-					if l4_addr >= l4_size begin
+					if (l4_addr > l4_size -1) begin
 						l4_loaded = 1;
 					end
 				end
+
+				default:;
 			endcase
 		
-		end else if &{input_loaded, l1_loaded, l2_loaded, l3_loaded, l4_loaded} begin
+		end else if (&{input_loaded, l1_loaded, l2_loaded, l3_loaded, l4_loaded}) begin
 			start_l1 <= 1;
 
 		end else if l1_done begin
