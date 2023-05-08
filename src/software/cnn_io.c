@@ -63,9 +63,10 @@ static int* read_value(int addr, int max_addr){
 
 static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
+    int size = 10;
     // new array of same size as input
     // changes
-    int (*arr_ptr)[10] = val_arg; // int (*arr_ptr)[10] = val_arg;
+    int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
     //int (*a)[10] = l;
     pr_info("iooctl: val_local size %d", sizeof(*arr_ptr)/sizeof((*arr_ptr)[0]));
     int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
@@ -85,7 +86,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             if (copy_from_user(val_local, arr_ptr, sizeof(val_local)))
                     return -EACCES;
             pr_info("ictl_write: done copying");
-            write_value(val_local, 10);
+            write_value(val_local, size);
             pr_info("ioctl_write: done writing");
             break;
 
@@ -93,7 +94,8 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             //if ((val_local = read_value()) != 0) 
             //    return -EACCES;
             //int *arr_ptr_local;
-            int* arr_ptr_local = read_value(0,10);
+            
+            int* arr_ptr_local = read_value(0,size);
             pr_info("ictl_reading: done reading %d", arr_ptr_local);
             pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
             pr_info("\n");
