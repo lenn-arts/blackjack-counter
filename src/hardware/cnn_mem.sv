@@ -40,6 +40,11 @@ module cnn_mem(
 	logic l3_loaded = 0;
 	logic l4_loaded = 0;
 
+	logic start_l1 = 0;
+	logic start_l2 = 0;
+	logic start_l3 = 0;
+	logic start_l4 = 0;
+
 	logic l1_done = 0;
 	logic l2_done = 0;
 	logic l3_done = 0;
@@ -133,15 +138,18 @@ module cnn_mem(
 
 		end else if (l1_done) begin
 			start_l2 <= 1;
+			start_l1 <= 0;
 
 		end else if (l2_done) begin
 			start_l3 <= 1;
+			start_l2 <= 0;
 
 		end else if (l3_done) begin
 			start_l4 <= 1;
+			start_l3 <= 0;
 
 		end else if (l4_done) begin
-			start_l4 <= 1;
+			start_l4 <= 0; // TODO
 
 		// READING
 		end else if (chipselect && read) begin
