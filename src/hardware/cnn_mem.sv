@@ -20,7 +20,7 @@ module memory#(parameter
     input logic 		write_enable,     
     input logic [N_ADDR_BITS-1:0] 	addr,  
     input logic [7:0]	data_in,   
-    output logic [7:0] 	data_out)
+    output logic [7:0] 	data_out);
 
 	logic [7:0] mem[N_BYTES-1:0];
 
