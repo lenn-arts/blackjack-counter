@@ -70,8 +70,8 @@ int main()
     int value_local;
     static const char filename[] = "/dev/cnn_mem";
 
-    int size=135;
-    int img[135] = {0};
+    int size=257;
+    int img[257] = {0};
     int i;  // Loop variable
     for (i = 0; i < size; i=i+1) // Using for loop we are initializing
     {
