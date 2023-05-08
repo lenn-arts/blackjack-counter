@@ -84,7 +84,7 @@ module cnn_mem(
 		// INITIAL LOAD
 		end else if (chipselect && write) begin
 			//ram[address] <= writedata;
-			case(address):
+			case(address)
 				4'd0: begin
 					input_dat[input_addr] <= writedata;
 					input_addr <= input_addr +1;
@@ -131,16 +131,16 @@ module cnn_mem(
 		end else if (&{input_loaded, l1_loaded, l2_loaded, l3_loaded, l4_loaded}) begin
 			start_l1 <= 1;
 
-		end else if l1_done begin
+		end else if (l1_done) begin
 			start_l2 <= 1;
 
-		end else if l2_done begin
+		end else if (l2_done) begin
 			start_l3 <= 1;
 
-		end else if l3_done begin
+		end else if (l3_done) begin
 			start_l4 <= 1;
 
-		end else if l4_done begin
+		end else if (l4_done) begin
 			start_l4 <= 1;
 
 		// READING
