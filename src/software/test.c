@@ -68,7 +68,6 @@ void set_value(const int *value_local, int target)
 int main()
 {
     int value_local;
-    int i;
     static const char filename[] = "/dev/cnn_mem";
 
     int img[] = {3,3,3,3,3,3,3,3,3,3};
