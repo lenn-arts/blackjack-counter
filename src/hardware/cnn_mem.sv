@@ -32,9 +32,10 @@ endmodule
 
 
 // TODO: idea how to use ram in layers:
-// have as additional output pins of the layers the input pins to the ream
+// A) have as additional output pins of the layers the input pins to the ream
 // and as additional input pins of the layers the output of the ram
 // then have top moudle (cnn_mem) link them accordingly
+// OR B) instantiate ram modules in layer modules and somehow deal with the input/output mem 
 
 module cnn_mem(
 		input logic        clk,
