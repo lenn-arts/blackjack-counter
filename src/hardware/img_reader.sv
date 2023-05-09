@@ -31,7 +31,7 @@ module img_reader(
 			get_img <= 0;
 		end else if (chipselect && read) begin
 			case(address)
-				1'b0:;
+				1'b0: begin
 					get_img <= 1;
 					counter_to_zeros <= 0;
 					counter <= counter + 1;
@@ -39,11 +39,13 @@ module img_reader(
 						counter_to_zeros <= counter;
 					end
 					break;
-				1'b1:;
+				end
+				1'b1: begin
 					get_img <= 0;
 					counter <= 0;
 					counter_to_zeros <= 0;
 					break;
+				end
 			endcase
 			end
 		end else begin 
