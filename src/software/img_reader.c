@@ -67,7 +67,7 @@ static int* read_img(int max_reads){
 
 static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int size = 640*480;
+    int size = 300;
     // new array of same size as input
     // changes
     int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
@@ -95,7 +95,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
             break;
 
         case IMG_READ:;
-            int* arr_ptr_local = read_img(640*480);
+            int* arr_ptr_local = read_img(size);
             pr_info("ictl_reading: done reading %d", arr_ptr_local);
             pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
             pr_info("\n");

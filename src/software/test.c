@@ -82,8 +82,8 @@ int main()
     static const char filename_cnn[] = "/dev/cnn_mem";
     static const char filename_img_reader[] = "/dev/img_reader";
 
-    int size=640*480;
-    int img[640*480] = {0};
+    int size=300;
+    int img[300] = {0};
     int i;  // Loop variable
     /*for (i = 0; i < size; i=i+1) // Using for loop we are initializing
     {
