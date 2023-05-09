@@ -189,11 +189,11 @@ static int img_reader_remove(struct platform_device *pdev)
 
 /* Which "compatible" string(s) to search for in the Device Tree */
 #ifdef CONFIG_OF
-static const struct of_device_id cnn_of_match[] = {
-	{ .compatible = "unknown,unknown-1.0" },
+static const struct of_device_id img_reader_of_match[] = {
+	{ .compatible = "csee4840,img_reader-1.0" },
 	{},
 };
-MODULE_DEVICE_TABLE(of, cnn_of_match);
+MODULE_DEVICE_TABLE(of, img_reader_of_match);
 #endif
 
 
@@ -203,7 +203,7 @@ static struct platform_driver img_reader_driver = {
 	.driver	= {
 		.name	= DRIVER_NAME,
 		.owner	= THIS_MODULE,
-		.of_match_table = of_match_ptr(cnn_of_match),
+		.of_match_table = of_match_ptr(img_reader_of_match),
 	},
 	.remove	= __exit_p(img_reader_remove),
 };
