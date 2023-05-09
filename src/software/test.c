@@ -97,10 +97,10 @@ int main()
 
     printf("CNN Userspace program started\n");
 
-    if ( (cnn_fd = open(filename_cnn, O_RDWR)) == -1) {
+    /*if ( (cnn_fd = open(filename_cnn, O_RDWR)) == -1) {
         fprintf(stderr, "could not open %s\n", filename_cnn);
         return -1;
-    }
+    }*/
     if ( (img_reader_fd = open(filename_img_reader, O_RDWR)) == -1) {
         fprintf(stderr, "could not open %s\n", filename_img_reader);
         return -1;
