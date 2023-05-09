@@ -45,7 +45,7 @@ int* get_value(int mode)
     }
   } else if (mode==1){ // read image mode
     printf("get_val: READ_IMG");
-    if (ioctl(cnn_fd, CNN_READ_IMG, value_local)) {
+    if (ioctl(cnn_fd, IMG_READ, value_local)) {
         perror("ioctl(CNN_READ_IMG) failed");
         return -1;
     }
