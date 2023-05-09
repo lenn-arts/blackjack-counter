@@ -38,13 +38,13 @@ int* get_value(int mode)
 {
   int* value_local;
   if (mode==0){ // regular mode
-    printf("get_val: READ_VAL")
+    printf("get_val: READ_VAL");
     if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
         perror("ioctl(CNN_READ_VAL) failed");
         return -1;
     }
   } else if (mode==1){ // read image mode
-    printf("get_val: READ_IMG")
+    printf("get_val: READ_IMG");
     if (ioctl(cnn_fd, CNN_READ_IMG, value_local)) {
         perror("ioctl(CNN_READ_IMG) failed");
         return -1;
@@ -97,11 +97,11 @@ int main()
     printf("CNN Userspace program started\n");
 
     if ( (cnn_fd = open(filename_cnn, O_RDWR)) == -1) {
-        fprintf(stderr, "could not open %s\n", filename);
+        fprintf(stderr, "could not open %s\n", filename_cnn);
         return -1;
     }
     if ( (img_reader_fd = open(filename_img_reader, O_RDWR)) == -1) {
-        fprintf(stderr, "could not open %s\n", filename);
+        fprintf(stderr, "could not open %s\n", filename_img_reader);
         return -1;
     }
 
