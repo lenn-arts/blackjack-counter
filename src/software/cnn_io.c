@@ -49,7 +49,7 @@ static void write_value(int val[], int max_addr){
 static int* read_value(int addr, int max_addr){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
+    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr), GFP_USER); // dynamic allocation
     int addr_local;
     for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
@@ -57,24 +57,6 @@ static int* read_value(int addr, int max_addr){
 
         pr_info("Kread_value: from %d (%d) read %d, %d, %d", addr_local, dev.virtbase+addr+addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local));
     }
-    pr_info("Kread_value: returning %d", out_ptr);
-    return out_ptr;
-};
-
-// cannot return array so will return pointer to array
-static int* read_img(int type, int max_reads){
-    /* ioread(adress-to-read-from)*/
-    //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = kmalloc(sizeof(int)*(max_reads), GFP_KERNEL); // dynamic allocation
-    int i_read;
-    for (i_read = 0; i_read < max_reads; i_read = i_read + 1){
-        //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
-        *(out_ptr+i_read) = (int) ioread32(dev.virtbase+0);
-
-        pr_info("Kread_value: from %d (%d) read %d", i_read, dev.virtbase, *(out_ptr+i_read));
-    }
-    int offset_zero = ioread32(dev.virtbase+1);
-    pr_info("Kread_value: offset zero %d", offset_zero);
     pr_info("Kread_value: returning %d", out_ptr);
     return out_ptr;
 };
