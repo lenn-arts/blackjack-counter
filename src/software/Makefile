@@ -1,7 +1,7 @@
 ifneq (${KERNELRELEASE},)
 
 # KERNELRELEASE defined: we are being compiled as part of the Kernel
-        obj-m := cnn_io.o
+        obj-m := img_reader.o
 
 else
 
@@ -19,7 +19,7 @@ clean:
 	${MAKE} -C ${KERNEL_SOURCE} SUBDIRS=${PWD} clean
 	${RM} test-m
 
-TARFILES = Makefile README cnn_io.h cnn_io.c test.c
+TARFILES = Makefile README img_reader.h img_reader.c test.c
 TARFILE = lab3-sw.tar.gz
 .PHONY : tar
 tar : $(TARFILE)
