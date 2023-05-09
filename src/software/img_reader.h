@@ -1,5 +1,5 @@
-#ifndef _VGA_BALL_H
-#define _VGA_BALL_H
+#ifndef _IMG_READER_H
+#define _IMG_READER_H
 
 #include <linux/ioctl.h>
 
