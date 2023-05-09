@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 int cnn_fd;
+int img_reader_fd;
 
 /* Read and print the background color */
 void print_value(void) {
@@ -33,12 +34,21 @@ void print_value(void) {
 }
 
 /* Set the background color */
-int* get_value(void)
+int* get_value(int mode)
 {
   int* value_local;
-  if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
-      perror("ioctl(CNN_READ_VAL) failed");
-      return -1;
+  if (mode==0){ // regular mode
+    printf("get_val: READ_VAL")
+    if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
+        perror("ioctl(CNN_READ_VAL) failed");
+        return -1;
+    }
+  } else if (mode==1){ // read image mode
+    printf("get_val: READ_IMG")
+    if (ioctl(cnn_fd, CNN_READ_IMG, value_local)) {
+        perror("ioctl(CNN_READ_IMG) failed");
+        return -1;
+    }
   }
   printf("\nUget_value: ptr: %d \t ptr[0]: %d", value_local, *(value_local));
   //printf("%d", value_local);
@@ -68,15 +78,16 @@ void set_value(const int *value_local, int target)
 int main()
 {
     int value_local;
-    static const char filename[] = "/dev/cnn_mem";
+    static const char filename_cnn[] = "/dev/cnn_mem";
+    static const char filename_img_reader[] = "/dev/img_reader";
 
-    int size=257;
-    int img[257] = {0};
+    int size=640*480;
+    int img[640*480] = {0};
     int i;  // Loop variable
-    for (i = 0; i < size; i=i+1) // Using for loop we are initializing
+    /*for (i = 0; i < size; i=i+1) // Using for loop we are initializing
     {
         img[i] = i;
-    }
+    }*/
 
     int weights_l1 = {0};
     int weights_l2 = {0};
@@ -85,9 +96,13 @@ int main()
 
     printf("CNN Userspace program started\n");
 
-    if ( (cnn_fd = open(filename, O_RDWR)) == -1) {
-    fprintf(stderr, "could not open %s\n", filename);
-    return -1;
+    if ( (cnn_fd = open(filename_cnn, O_RDWR)) == -1) {
+        fprintf(stderr, "could not open %s\n", filename);
+        return -1;
+    }
+    if ( (img_reader_fd = open(filename_img_reader, O_RDWR)) == -1) {
+        fprintf(stderr, "could not open %s\n", filename);
+        return -1;
     }
 
     // printf("initial state: ");
@@ -96,7 +111,8 @@ int main()
     long arr_ptr = (long) img; // &arr
     printf("\nU arr_ptr: %d", arr_ptr);
     set_value(arr_ptr, 0);
-    int* ptr = get_value();
+    //int* ptr = get_value();
+    int* ptr = get_value(1);
     printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
     usleep(400000);

@@ -11,9 +11,9 @@
 #include <linux/of_address.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
-#include "cnn_io.h"
+#include "img_reader_io.h"
 
-#define DRIVER_NAME "cnn_mem"
+#define DRIVER_NAME "img_reader"
 
 /* Device registers */
 #define ADDR(x) (x+1)  // local helper that maps x (address) to right bit in target space (returns new address)
@@ -24,6 +24,7 @@ struct my_comp {
     int value;
 } dev;
 
+// TODO if desired to write images 
 static void write_value(int val[], int max_addr){
     /* iowrite8(value, adress-to-write-to)*/
     //int addr = 0;
@@ -45,21 +46,6 @@ static void write_value(int val[], int max_addr){
     pr_info("Kwrite_value: done iowrite");
 };
 
-// cannot return array so will return pointer to array
-static int* read_value(int addr, int max_addr){
-    /* ioread(adress-to-read-from)*/
-    //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    int* out_ptr = kmalloc(sizeof(int)*(max_addr-addr), GFP_KERNEL); // dynamic allocation
-    int addr_local;
-    for (addr_local = 0; addr_local < max_addr-addr; addr_local = addr_local + 1){
-        //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
-        *(out_ptr+addr_local) = (int) ioread16(dev.virtbase+addr+addr_local*2);
-
-        pr_info("Kread_value: from %d (%d) read %d, %d, %d", addr_local, dev.virtbase+addr+addr_local, *(out_ptr+addr_local), ioread8(dev.virtbase+addr+addr_local), ioread16(dev.virtbase+addr+addr_local));
-    }
-    pr_info("Kread_value: returning %d", out_ptr);
-    return out_ptr;
-};
 
 // cannot return array so will return pointer to array
 static int* read_img(int type, int max_reads){
@@ -79,9 +65,9 @@ static int* read_img(int type, int max_reads){
     return out_ptr;
 };
 
-static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
+static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int size = 257;
+    int size = 640*480;
     // new array of same size as input
     // changes
     int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
@@ -90,7 +76,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
     int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
-        case CNN_WRITE_VAL:;
+        case IMG_WRITE:;
             /* copy_from_user(to, from, length) */
             /* copy from arg to vla (to dev.virtbase)*/
             //if (copy_from_user(&val_local, (int *) val_arg, sizeof(int)))
@@ -108,23 +94,7 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
             pr_info("ioctl_write: done writing");
             break;
 
-        case CNN_READ_VAL:;
-            //if ((val_local = read_value()) != 0) 
-            //    return -EACCES;
-            //int *arr_ptr_local;
-            
-            int* arr_ptr_local = read_value(0,size);
-            pr_info("ictl_reading: done reading %d", arr_ptr_local);
-            pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
-            pr_info("\n");
-            //pr_info("val arg: %d", val_arg)
-            // copy from local to arg
-            if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local)))
-                return -EACCES;
-            kfree(arr_ptr_local);
-            break;
-
-        case CNN_READ_IMG:;
+        case IMG_READ:;
             int* arr_ptr_local = read_img(640*480);
             pr_info("ictl_reading: done reading %d", arr_ptr_local);
             pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
@@ -142,16 +112,16 @@ static long cnn_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 };
 
 /* 1) The operations our device knows how to do (turn ioctl into file operations) */
-static const struct file_operations cnn_fops = {
+static const struct file_operations img_reader_fops = {
 	.owner		= THIS_MODULE,
-	.unlocked_ioctl = cnn_ioctl
+	.unlocked_ioctl = img_reader_ioctl
 };
 
 /* 2) Information about our device for the "misc" framework -- like a char dev */
-static struct miscdevice cnn_misc_device = {
+static struct miscdevice img_reader_misc_device = {
 	.minor		= MISC_DYNAMIC_MINOR,
 	.name		= DRIVER_NAME,
-	.fops		= &cnn_fops,
+	.fops		= &img_reader_fops,
 };
 
 /*
@@ -159,7 +129,7 @@ static struct miscdevice cnn_misc_device = {
  * a welcome message
  */
 // 3.1) setup/register device
-static int __init cnn_probe(struct platform_device *pdev)
+static int __init img_reader_probe(struct platform_device *pdev)
 {
     //int initial = 0;
     int initial[] = {0};
@@ -167,7 +137,7 @@ static int __init cnn_probe(struct platform_device *pdev)
 	int ret;
 
 	/* Register ourselves as a misc device: creates /dev/vga_ball */
-	ret = misc_register(&cnn_misc_device);
+	ret = misc_register(&img_reader_misc_device);
 
 	/* Get the address of our registers from the device tree */
 	// int of_address_to_resource(struct device_node *dev, int index, struct resource *r)¶
@@ -202,17 +172,17 @@ static int __init cnn_probe(struct platform_device *pdev)
 out_release_mem_region:
 	release_mem_region(dev.res.start, resource_size(&dev.res));
 out_deregister:
-	misc_deregister(&cnn_misc_device);
+	misc_deregister(&img_reader_misc_device);
 	return ret;
 }
 
 /* Clean-up code: release resources */
 // 3.2) remove
-static int cnn_remove(struct platform_device *pdev)
+static int img_reader_remove(struct platform_device *pdev)
 {
 	iounmap(dev.virtbase);
 	release_mem_region(dev.res.start, resource_size(&dev.res));
-	misc_deregister(&cnn_misc_device);
+	misc_deregister(&img_reader_misc_device);
 	return 0;
 }
 
@@ -229,34 +199,34 @@ MODULE_DEVICE_TABLE(of, cnn_of_match);
 
 
 /* Information for registering ourselves as a "platform" driver */
-static struct platform_driver cnn_driver = {
+static struct platform_driver img_reader_driver = {
 	.driver	= {
 		.name	= DRIVER_NAME,
 		.owner	= THIS_MODULE,
 		.of_match_table = of_match_ptr(cnn_of_match),
 	},
-	.remove	= __exit_p(cnn_remove),
+	.remove	= __exit_p(img_reader_remove),
 };
 
 /* Called when the module is loaded: set things up */
-static int __init cnn_init(void)
+static int __init img_reader_init(void)
 {
 	pr_info(DRIVER_NAME ": init\n");
-	return platform_driver_probe(&cnn_driver, cnn_probe);
+	return platform_driver_probe(&img_reader_driver, img_reader_probe);
 }
 
 /* Calball when the module is unloaded: release resources */
-static void __exit cnn_exit(void)
+static void __exit img_reader_exit(void)
 {
-	platform_driver_unregister(&cnn_driver);
+	platform_driver_unregister(&img_reader_driver);
 	pr_info(DRIVER_NAME ": exit\n");
 }
 
-module_init(cnn_init);
-module_exit(cnn_exit);
+module_init(img_reader_init);
+module_exit(img_reader_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Lennart Schulze");
-MODULE_DESCRIPTION("CNN memory driver for FPGA accelartion");
+MODULE_DESCRIPTION("Img reader driver for FPGA to get camera data");
 
 

@@ -5,10 +5,11 @@
 module SimpleLayer(
 		input logic clk,
 		input logic start,
-		input logic data_in,
+		input logic [7:0] data_in,
+		input logic [7:0] weigths,
 		input logic weights,
 		
-		output logic data_out);
+		output logic [7:0] data_out);
 
 	assign data_out = data_in;
 endmodule
