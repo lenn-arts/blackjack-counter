@@ -11,7 +11,7 @@
 #include <linux/of_address.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
-#include "img_reader_io.h"
+#include "img_reader.h"
 
 #define DRIVER_NAME "img_reader"
 
