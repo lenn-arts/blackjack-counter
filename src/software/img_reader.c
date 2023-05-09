@@ -48,7 +48,7 @@ static void write_value(int val[], int max_addr){
 
 
 // cannot return array so will return pointer to array
-static int* read_img(int type, int max_reads){
+static int* read_img(int max_reads){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
     int* out_ptr = kmalloc(sizeof(int)*(max_reads), GFP_KERNEL); // dynamic allocation
