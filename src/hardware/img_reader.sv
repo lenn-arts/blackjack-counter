@@ -5,7 +5,7 @@
 module img_reader(
 		input logic        clk,
 	    input logic 	   reset,
-		input logic [7:0]  writedata, // must be multiple of 8
+		input logic [23:0]  writedata, // must be multiple of 8
 		input logic 	   write,
 		input 		   		chipselect,
 		input logic   		address,
@@ -47,7 +47,6 @@ module img_reader(
 					break;
 				end
 			endcase
-			end
 		end else begin 
 			get_img <= 0;
 			counter <= 0;
