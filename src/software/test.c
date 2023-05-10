@@ -140,9 +140,10 @@ int main()
     }*/
     int *ptr = get_value(1);
     print_image(ptr, 480, 640);
-    free(ptr);
     printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
+    free(ptr);
+
     usleep(400000);
     //}
 
