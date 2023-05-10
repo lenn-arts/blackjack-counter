@@ -37,10 +37,10 @@ void print_image(int *arr, int numrows, int numcols) {
           //if (i % 12 != 0) continue;
           ptr = (int *) arr + i*numcols + j;
           //printf("Image at row %d, col %d:\n", i, j);
-          lsbyte = (char *) ptr + 0;
+          /*lsbyte = (char *) ptr + 0;
           sprintf(buffer, "%d", *lsbyte);
           fputs(buffer, fp);
-          fputs(" ", fp);
+          fputs(" ", fp);*/
           //printf("Least significant byte is: %s ", buffer);
           rbyte = (char *) ptr + 3;
           sprintf(buffer, "%d", *rbyte);
