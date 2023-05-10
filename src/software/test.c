@@ -19,7 +19,25 @@
 int cnn_fd;
 int img_reader_fd;
 char *test;
-
+void print_image(int *arr, int numrows, int numcols) {
+  int *ptr;
+  char* rbyte, *gbyte, *bbyte, *lsbyte;
+  for (int i = 0; i < numrows; i++) {
+      for (int j = 0; j < numcols; j++) {
+          ptr = arr + i*numcols + j;
+          printf("Image at row %d, col %d:\n", i, j);
+          lsbyte = ptr;
+          printf("Least significant byte is: %d ", *lsbyte);
+          rbyte = (char *) ptr + 3;
+          printf("Red byte is: %d ", *rbyte);
+          gbyte = (char *) ptr + 2;
+          printf("Green byte is: %d ", *gbyte);
+          bbyte = (char *) ptr + 1;
+          printf("Blue byte is: %d ", *bbyte);
+      } 
+  }
+  
+}
 /* Read and print the background color */
 void print_value(void) {
   int value_local;
@@ -120,6 +138,8 @@ int main()
       free(ptr[i]); 
     }*/
     int *ptr = get_value(1);
+    print_image(ptr, 480, 640);
+    free(ptr);
     printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
     usleep(400000);
