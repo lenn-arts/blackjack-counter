@@ -20,7 +20,7 @@ module img_reader(
 		output logic [31:0] readdata,
 		output logic get_img); // must be multiple of 8!
 
-	assign readdata = 32'd999 //get_img ? {VGA_R, VGA_G, VGA_B, 8'd0} : 32'd9999999;
+	assign readdata = 32'd999; //get_img ? {VGA_R, VGA_G, VGA_B, 8'd0} : 32'd9999999;
 
 	logic [31:0] counter_to_zeros = 32'd0;
 	logic [31:0] counter = 32'd0;
