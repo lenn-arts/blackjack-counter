@@ -71,12 +71,13 @@ static int* read_img(int max_reads){
 
 static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int size = 640;
+    //int size = 640;
+    int size = 640 * 480;
     // new array of same size as input
     // changes
     int *arr_ptr = val_arg;
     //int (*a)[10] = l;
-    int val_local[size];
+    int val_local[640];
     //pr_info("iooctl: size = %d, sizeof(val_local) = %d\n", size, sizeof(val_local));
     
 
@@ -92,7 +93,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
                     return -EACCES;
                 pr_info("ictl_write val_local[%d]: %d , %d \t arr_ptr %d, %d, %d", i, *(val_local+i), val_local[i], *(arr_ptr+i), arr_ptr[i]);
             }*/
-            if (copy_from_user(val_local, arr_ptr, sizeof(val_local)))
+            if (copy_from_user(val_local, arr_ptr, size * sizeof(int)))
                     return -EACCES;
             pr_info("ictl_write: done copying");
             write_value(val_local, size);
