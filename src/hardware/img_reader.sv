@@ -37,18 +37,18 @@ module img_reader(
 					counter <= counter + 32'd1;
 					if (!HSYNC && !VSYNC) begin
 						counter_to_zeros <= counter;
-						counter <= 32'd0; // here
+						counter <= 32'd5; // here
 					end
 				end
 				8'b1: begin
 					get_img <= 1'd0;
-					counter <= 32'd0;
+					counter <= 32'd6;
 				end
 			endcase
 		end else begin 
-			get_img <= 1'd0; // here:: 
-			counter <= 32'd0;
-			counter_to_zeros <= 32'd0;
+			//get_img <= 1'd0; // here:: 
+			//counter <= 32'd0;
+			//counter_to_zeros <= 32'd0;
 		end
 	end
 
