@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#define _OPEN_SYS_ITOA_EXT
 
 int cnn_fd;
 int img_reader_fd;
@@ -23,6 +25,7 @@ void print_image(int *arr, int numrows, int numcols) {
   int *ptr;
   char* rbyte, *gbyte, *bbyte, *lsbyte;
   FILE* fp;
+  char buffer[4];
   fp = fopen(path_to_img, "w");
   if (fp == NULL) {
       perror("Failed: ");
@@ -35,13 +38,17 @@ void print_image(int *arr, int numrows, int numcols) {
           ptr = (int *) arr + i*numcols + j;
           printf("Image at row %d, col %d:\n", i, j);
           lsbyte = (char *) ptr + 0;
-          printf("Least significant byte is: %d ", *lsbyte);
+          itoa(*lsbyte, buffer, DECIMAL);
+          printf("Least significant byte is: %s ", buffer);
           rbyte = (char *) ptr + 3;
-          printf("Red byte is: %d ", *rbyte);
+          itoa(*rbyte, buffer, DECIMAL)
+          printf("Red byte is: %s ", buffer);
           gbyte = (char *) ptr + 2;
-          printf("Green byte is: %d ", *gbyte);
+          itoa(*gbyte, buffer, DECIMAL);
+          printf("Green byte is: %s ", buffer);
           bbyte = (char *) ptr + 1;
-          printf("Blue byte is: %d \n", *bbyte);
+          itoa(*bbyte, buffer, DECIMAL)
+          printf("Blue byte is: %s \n", buffer);
       } 
   }
   
@@ -83,13 +90,13 @@ int* get_value(int mode)
   }
   printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
   lsbyte = value_local;
-  printf("Least significant byte is: %s\n", itoa(*lsbyte));
+  printf("Least significant byte is: %d\n", *lsbyte);
   rbyte = (char *) value_local + 3;
-  printf("Red byte is: %s\n", itoa(*rbyte));
+  printf("Red byte is: %d\n", *rbyte);
   gbyte = (char *) value_local + 2;
-  printf("Green byte is: %s\n", itoa(*gbyte));
+  printf("Green byte is: %d\n", *gbyte);
   bbyte = (char *) value_local + 1;
-  printf("Blue byte is: %s\n", itoa(*bbyte));
+  printf("Blue byte is: %d\n", *bbyte);
   //printf("%d", value_local);
   return value_local;
 };
