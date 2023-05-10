@@ -23,8 +23,9 @@ int main(void)
     }
 
     // get virtual addr that maps to physical
-    virtual_base = mmap( NULL, HW_REGS_SPAN, ( PROT_READ | PROT_WRITE ),
-    MAP_SHARED, fd, HW_REGS_BASE );
+    int* addr = HW_REGS_BASE;
+    virtual_base = mmap( addr, HW_REGS_SPAN, ( PROT_READ | PROT_WRITE ),
+    MAP_SHARED, fd, 0);
     if( virtual_base == MAP_FAILED ) {
         printf( "ERROR: mmap() failed...\n" );
         close( fd );
