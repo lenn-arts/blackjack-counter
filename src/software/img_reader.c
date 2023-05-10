@@ -51,6 +51,7 @@ static void write_value(int val[], int max_addr){
 static int* read_img(int max_reads){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
+    pr_info("trying kmalloc");
     int* out_ptr;
     if ( (out_ptr = kmalloc(sizeof(int)*(max_reads), GFP_USER)) == -1){
         pr_info("ERROR: could not allocate %d bytes in memory\n", sizeof(int)*(max_reads));
@@ -70,7 +71,7 @@ static int* read_img(int max_reads){
 
 static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int size = 5000;
+    int size = 500;
     // new array of same size as input
     // changes
     int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
