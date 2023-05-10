@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-#define HW_REGS_BASE ( 0xff200000 )
+#define HW_REGS_BASE ( 0xc0000000 )
 #define HW_REGS_SPAN ( 0x00000400 )
 #define HW_REGS_MASK ( HW_REGS_SPAN - 1 )
 #define LED_PIO_BASE 0x0
@@ -23,9 +23,8 @@ int main(void)
     }
 
     // get virtual addr that maps to physical
-    int* addr = HW_REGS_BASE;
-    virtual_base = mmap( addr, HW_REGS_SPAN, ( PROT_READ | PROT_WRITE ),
-    MAP_SHARED, fd, 0);
+    virtual_base = mmap( NULL, HW_REGS_SPAN, ( PROT_READ | PROT_WRITE ),
+    MAP_SHARED, fd, HW_REGS_BASE );
     if( virtual_base == MAP_FAILED ) {
         printf( "ERROR: mmap() failed...\n" );
         close( fd );
