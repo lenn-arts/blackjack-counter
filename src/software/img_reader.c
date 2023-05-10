@@ -53,10 +53,9 @@ static int* read_img(int max_reads){
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
     int* out_ptr = kmalloc(sizeof(int)*(max_reads), GFP_USER); // dynamic allocation
     int i_read;
-    for (i_read = 0; i_read < max_reads; i_read = i_read + 1){
+    for (i_read = 1; i_read < max_reads +1; i_read = i_read + 1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
-        *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here;
-        out_ptr[i_read] = 
+        *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here; 
 
         pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
     }
