@@ -81,14 +81,9 @@ int main()
     int value_local;
     static const char filename_cnn[] = "/dev/cnn_mem";
     static const char filename_img_reader[] = "/dev/img_reader";
-
+    int numlines=480;
     int size=640;
-    int img[640] = {0};
     int i;  // Loop variable
-    /*for (i = 0; i < size; i=i+1) // Using for loop we are initializing
-    {
-        img[i] = i;
-    }*/
 
     int weights_l1 = {0};
     int weights_l2 = {0};
@@ -106,16 +101,12 @@ int main()
         return -1;
     }
 
-    // printf("initial state: ");
-
-    //for (i = 0 ; i < 24 ; i++) {
-    long arr_ptr = (long) img; // &arr
-    printf("\nU arr_ptr: %d", arr_ptr);
-    //set_value(arr_ptr, 0);
-    //int* ptr = get_value();
-    int* ptr = get_value(1);
-    printf("main: got value %d", ptr);
+    int* ptr[numlines];
+    for (i = 0; i < numlines; i++) {
+      ptr[i] = get_value(1);
+    }
     printf("main: got value %d", ptr[0]);
+    printf("main: got value %d", ptr[0][0]);
     usleep(400000);
     //}
 
