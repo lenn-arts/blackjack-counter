@@ -103,7 +103,13 @@ int main()
 
     int* ptr[numlines];
     for (i = 0; i < numlines; i++) {
+      ptr[i] = malloc(size*sizeof(int)); 
+    }
+    for (i = 0; i < numlines; i++) {
       ptr[i] = get_value(1);
+    }
+    for (i = 0; i < numlines; i++) {
+      free(ptr[i]); 
     }
     printf("main: got value %d", ptr[0]);
     printf("main: got value %d", ptr[0][0]);
