@@ -39,7 +39,7 @@ void print_value(void) {
 int* get_value(int mode)
 {
   int* value_local = malloc(640 * sizeof(int));
-  char* lsbyte; // To check that the least significant byte is always 0
+  char* rbyte, gbyte, bbyte, lsbyte; // To check that the least significant byte is always 0
   if (mode==0){ // regular mode
     printf("get_val: READ_VAL");
     if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
@@ -56,6 +56,12 @@ int* get_value(int mode)
   printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
   lsbyte = value_local;
   printf("Least significant byte is: %d\n", *lsbyte);
+  rbyte = (char *) value_local + 3;
+  printf("Red byte is: %d\n", *rbyte);
+  gbyte = (char *) value_local + 2;
+  printf("Green byte is: %d\n", *gbyte);
+  bbyte = (char *) value_local + 1;
+  printf("Blue byte is: %d\n", *bbyte);
   //printf("%d", value_local);
   return value_local;
 };
