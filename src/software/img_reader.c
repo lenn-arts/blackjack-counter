@@ -51,7 +51,7 @@ static void write_value(int val[], int max_addr){
 static int* read_img(int max_reads){
     /* ioread(adress-to-read-from)*/
     //static int out[max_addr-addr]; // doesnt work because dynamic size and static (needs static to retain mem addr outside the fucntion)
-    pr_info("trying kmalloc");
+    //pr_info("trying kmalloc");
     int* out_ptr;
     if ( (out_ptr = kmalloc(sizeof(int)*(max_reads), GFP_USER)) == -1){
         pr_info("ERROR: could not allocate %d bytes in memory\n", sizeof(int)*(max_reads));
@@ -64,8 +64,8 @@ static int* read_img(int max_reads){
         //pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
     }
     int offset_zero = ioread32(dev.virtbase+4);
-    pr_info("Kread_value: offset zero %d", offset_zero);
-    pr_info("Kread_value: returning %d", out_ptr);
+    //pr_info("Kread_value: offset zero %d", offset_zero);
+    //pr_info("Kread_value: returning %d", out_ptr);
     return out_ptr;
 };
 
@@ -77,7 +77,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
     int *arr_ptr = val_arg;
     //int (*a)[10] = l;
     int val_local[size];
-    pr_info("iooctl: size = %d, sizeof(val_local) = %d\n", size, sizeof(val_local));
+    //pr_info("iooctl: size = %d, sizeof(val_local) = %d\n", size, sizeof(val_local));
     
 
     switch(cmd){
@@ -101,9 +101,9 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
 
         case IMG_READ:;
             int* arr_ptr_local = read_img(size);
-            pr_info("ictl_reading: done reading %d", arr_ptr_local);
-            pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
-            pr_info("\n");
+            //pr_info("ictl_reading: done reading %d", arr_ptr_local);
+            //pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
+            //pr_info("\n");
             if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local))) {
 		pr_info("copy to user failed");
 		return -EACCES;
