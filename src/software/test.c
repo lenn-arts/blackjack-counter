@@ -83,13 +83,13 @@ int* get_value(int mode)
   }
   printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
   lsbyte = value_local;
-  printf("Least significant byte is: %d\n", *lsbyte);
+  printf("Least significant byte is: %s\n", itoa(*lsbyte));
   rbyte = (char *) value_local + 3;
-  printf("Red byte is: %d\n", *rbyte);
+  printf("Red byte is: %s\n", itoa(*rbyte));
   gbyte = (char *) value_local + 2;
-  printf("Green byte is: %d\n", *gbyte);
+  printf("Green byte is: %s\n", itoa(*gbyte));
   bbyte = (char *) value_local + 1;
-  printf("Blue byte is: %d\n", *bbyte);
+  printf("Blue byte is: %s\n", itoa(*bbyte));
   //printf("%d", value_local);
   return value_local;
 };
