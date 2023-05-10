@@ -39,16 +39,24 @@ void print_image(int *arr, int numrows, int numcols) {
           printf("Image at row %d, col %d:\n", i, j);
           lsbyte = (char *) ptr + 0;
           sprintf(buffer, "%d", *lsbyte);
-          printf("Least significant byte is: %s ", buffer);
+          fputs(buffer, fd);
+          fputs(" ", fd);
+          //printf("Least significant byte is: %s ", buffer);
           rbyte = (char *) ptr + 3;
           sprintf(buffer, "%d", *rbyte);
-          printf("Red byte is: %s ", buffer);
+          fputs(buffer, fd);
+          fputs(" ", fd);
+          //printf("Red byte is: %s ", buffer);
           gbyte = (char *) ptr + 2;
           sprintf(buffer, "%d", *gbyte);
-          printf("Green byte is: %s ", buffer);
+          fputs(buffer, fd);
+          fputs(" ", fd);
+          //printf("Green byte is: %s ", buffer);
           bbyte = (char *) ptr + 1;
           sprintf(buffer, "%d", *bbyte);
-          printf("Blue byte is: %s \n", buffer);
+          fputs(buffer, fd);
+          fputs("\n", fd);
+          //printf("Blue byte is: %s \n", buffer);
       } 
   }
   
