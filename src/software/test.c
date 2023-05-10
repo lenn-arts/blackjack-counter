@@ -38,7 +38,7 @@ void print_value(void) {
 /* Set the background color */
 int* get_value(int mode)
 {
-  int* value_local = malloc(640 * sizeof(int));
+  int* value_local = malloc(640 * 480 * sizeof(int));
   char* rbyte, *gbyte, *bbyte, *lsbyte; // To check that the least significant byte is always 0
   if (mode==0){ // regular mode
     printf("get_val: READ_VAL");
@@ -111,16 +111,17 @@ int main()
         return -1;
     }
 
-    int* ptr[numlines];
+    /*int* ptr[numlines];
     for (i = 0; i < numlines; i++) {
       printf("Line number %d\n", i);
       ptr[i] = get_value(1);
     }
     for (i = 0; i < numlines; i++) {
       free(ptr[i]); 
-    }
+    }*/
+    int *ptr = get_value(1);
+    printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
-    printf("main: got value %d", ptr[0][0]);
     usleep(400000);
     //}
 
