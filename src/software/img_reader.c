@@ -93,7 +93,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
                 pr_info("ictl_write val_local[%d]: %d , %d \t arr_ptr %d, %d, %d", i, *(val_local+i), val_local[i], *(arr_ptr+i), arr_ptr[i]);
             }*/
             if (copy_from_user(val_local, arr_ptr, sizeof(val_local)))
-                    return 0;//-EACCES;
+                    return -EACCES;
             pr_info("ictl_write: done copying");
             write_value(val_local, size);
             pr_info("ioctl_write: done writing");
@@ -105,7 +105,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
             pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
             pr_info("\n");
             if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local)))
-                return -EACCES;
+                return 0;//-EACCES;
             kfree(arr_ptr_local);
             break;
     
