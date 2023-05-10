@@ -21,13 +21,19 @@
 int cnn_fd;
 int img_reader_fd;
 char path_to_img[] = "./rgb888img";
+char path_to_img_bin[] = "./rgb888imgbin";
 void print_image(int *arr, int numrows, int numcols) {
   int *ptr;
   char* rbyte, *gbyte, *bbyte, *lsbyte;
-  FILE* fp;
+  FILE* fp, *fpbin;
   char buffer[4];
   fp = fopen(path_to_img, "w");
   if (fp == NULL) {
+      perror("Failed: ");
+      return 1;
+  }
+  fpbin = fopen(path_to_img_bin, "w");
+  if (fpbin == NULL) {
       perror("Failed: ");
       return 1;
   }
@@ -44,26 +50,27 @@ void print_image(int *arr, int numrows, int numcols) {
           //printf("Least significant byte is: %s ", buffer);
           rbyte = (char *) ptr + 3;
           sprintf(buffer, "%d", *rbyte);
-          //fputs(buffer, fp);
-          fwrite(rbyte, sizeof(char), 1, fp);
-          //fputs(" ", fp);
+          fputs(buffer, fp);
+          fwrite(rbyte, sizeof(char), 1, fpbin);
+          fputs(" ", fp);
           //printf("Red byte is: %s ", buffer);
           gbyte = (char *) ptr + 2;
           sprintf(buffer, "%d", *gbyte);
-          //fputs(buffer, fp);
-          fwrite(gbyte, sizeof(char), 1, fp);
-          //fputs(" ", fp);
+          fputs(buffer, fp);
+          fwrite(gbyte, sizeof(char), 1, fpbin);
+          fputs(" ", fp);
           //printf("Green byte is: %s ", buffer);
           bbyte = (char *) ptr + 1;
           sprintf(buffer, "%d", *bbyte);
-          //fputs(buffer, fp);
-          fwrite(bbyte, sizeof(char), 1, fp);
-          //fputs("\n", fp);
+          fputs(buffer, fp);
+          fwrite(bbyte, sizeof(char), 1, fpbin);
+          fputs("\n", fp);
           //printf("Blue byte is: %s \n", buffer);
       } 
   }
   
   fclose(fp);
+  fclose(fpbin);
   
 }
 /* Read and print the background color */
