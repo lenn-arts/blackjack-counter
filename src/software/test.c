@@ -37,7 +37,7 @@ void print_value(void) {
 /* Set the background color */
 int* get_value(int mode)
 {
-  int* value_local;
+  int* value_local = malloc(640 * sizeof(int));
   if (mode==0){ // regular mode
     printf("get_val: READ_VAL");
     if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
@@ -102,9 +102,6 @@ int main()
     }
 
     int* ptr[numlines];
-    for (i = 0; i < numlines; i++) {
-      ptr[i] = malloc(size*sizeof(int)); 
-    }
     for (i = 0; i < numlines; i++) {
       ptr[i] = get_value(1);
     }
