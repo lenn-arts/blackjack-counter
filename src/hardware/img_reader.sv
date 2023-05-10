@@ -20,9 +20,9 @@ module img_reader(
 		output logic [31:0] readdata,
 		output logic get_img); // must be multiple of 8!
 
-	assign readdata = get_img ? {VGA_R, VGA_G, VGA_B, 8'd0} : counter_to_zeros;
+	assign readdata = get_img ? {VGA_R, VGA_G, VGA_B, 8'd0} : offset_to_zeros;
 
-	logic [31:0] counter_to_zeros = 32'd0;
+	logic [31:0] offset_to_zeros = 32'd0;
 	logic [31:0] counter = 32'd0;
 
 	always_ff @(posedge clk) begin
@@ -33,10 +33,10 @@ module img_reader(
 			case(address)
 				8'b0: begin
 					get_img <= 1'd1;
-					counter_to_zeros <= 32'd0;
+					//offset_to_zeros <= 32'd0; CHANGED THIS
 					counter <= counter + 32'd1;
 					if (!HSYNC && !VSYNC) begin
-						counter_to_zeros <= counter;
+						offset_to_zeros <= counter;
 						counter <= 32'd5; // here
 					end
 				end
@@ -48,7 +48,7 @@ module img_reader(
 		end else begin 
 			//get_img <= 1'd0; // here:: 
 			//counter <= 32'd0;
-			//counter_to_zeros <= 32'd0;
+			//offset_to_zeros <= 32'd0;
 		end
 	end
 
