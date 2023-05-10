@@ -22,6 +22,8 @@ int cnn_fd;
 int img_reader_fd;
 char path_to_img[] = "./rgb888img";
 char path_to_img_bin[] = "./rgb888imgbin";
+
+// as long as numrows and cols is correct, it doesnt matter that last value is offset
 void print_image(int *arr, int numrows, int numcols) {
   int *ptr;
   char* rbyte, *gbyte, *bbyte, *lsbyte;
@@ -91,7 +93,7 @@ void print_value(void) {
 /* Set the background color */
 int* get_value(int mode)
 {
-  int* value_local = malloc(640 * 480 * sizeof(int));
+  int* value_local = malloc((640 * 480 + 1) * sizeof(int)); // plus 1 for the offset bit
   char* rbyte, *gbyte, *bbyte, *lsbyte; // To check that the least significant byte is always 0
   if (mode==0){ // regular mode
     printf("get_val: READ_VAL");
@@ -105,17 +107,20 @@ int* get_value(int mode)
         perror("ioctl(IMG_READ) failed");
         return -1;
     }
+    lsbyte = value_local;
+    int offset = *(lsbyte+640*480);
+    printf("pointer is %d\n", offset);
+    printf("Least significant byte is: %d\n", *lsbyte);
+    rbyte = (char *) value_local + 3;
+    printf("Red byte is: %d\n", *rbyte);
+    gbyte = (char *) value_local + 2;
+    printf("Green byte is: %d\n", *gbyte);
+    bbyte = (char *) value_local + 1;
+    printf("Blue byte is: %d\n", *bbyte);
+    //printf("%d", value_local);
   }
   printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
-  lsbyte = value_local;
-  printf("Least significant byte is: %d\n", *lsbyte);
-  rbyte = (char *) value_local + 3;
-  printf("Red byte is: %d\n", *rbyte);
-  gbyte = (char *) value_local + 2;
-  printf("Green byte is: %d\n", *gbyte);
-  bbyte = (char *) value_local + 1;
-  printf("Blue byte is: %d\n", *bbyte);
-  //printf("%d", value_local);
+  
   return value_local;
 };
 
