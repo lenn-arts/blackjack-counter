@@ -38,16 +38,16 @@ void print_image(int *arr, int numrows, int numcols) {
           ptr = (int *) arr + i*numcols + j;
           printf("Image at row %d, col %d:\n", i, j);
           lsbyte = (char *) ptr + 0;
-          itoa((int) *lsbyte, buffer, 10);
+          sprintf(buffer, "%d", *lsbyte)
           printf("Least significant byte is: %s ", buffer);
           rbyte = (char *) ptr + 3;
-          itoa((int) *rbyte, buffer, 10);
+          sprintf(buffer, "%d", *rbyte)
           printf("Red byte is: %s ", buffer);
           gbyte = (char *) ptr + 2;
-          itoa((int) *gbyte, buffer, 10);
+          sprintf(buffer, "%d", *gbyte)
           printf("Green byte is: %s ", buffer);
           bbyte = (char *) ptr + 1;
-          itoa((int) *bbyte, buffer, 10);
+          sprintf(buffer, "%d", *bbyte)
           printf("Blue byte is: %s \n", buffer);
       } 
   }
