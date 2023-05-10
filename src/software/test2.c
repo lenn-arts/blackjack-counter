@@ -3,8 +3,8 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-#define HW_REGS_BASE ( 0x00000000 )
-#define HW_REGS_SPAN ( 0x00000200 )
+#define HW_REGS_BASE ( 0xff200000 )
+#define HW_REGS_SPAN ( 0x00200000 )
 #define HW_REGS_MASK ( HW_REGS_SPAN - 1 )
 #define LED_PIO_BASE 0x0
 
@@ -17,7 +17,7 @@ int main(void)
     // somewhere here: call driver to instantiate dev in device tree (or will alredy have been loaded)
 
     // Open /dev/mem
-    if( ( fd = open( "/dev/img_reader", ( O_RDWR | O_SYNC ) ) ) == -1 ) {
+    if( ( fd = open( "/dev/mem", ( O_RDWR | O_SYNC ) ) ) == -1 ) {
         printf( "ERROR: could not open \"img_reader\"...\n" );
     return( 1 );
     }
