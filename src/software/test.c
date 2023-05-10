@@ -52,7 +52,7 @@ int* get_value(int mode)
         return -1;
     }
   }
-  printf("\nUget_value: ptr: %d \t ptr[0]: %d", value_local, *(value_local));
+  printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
   //printf("%d", value_local);
   return value_local;
 };
