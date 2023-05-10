@@ -104,8 +104,10 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
             pr_info("ictl_reading: done reading %d", arr_ptr_local);
             pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
             pr_info("\n");
-            if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local)))
-                return -EACCES;
+            if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local))) {
+		pr_info("copy to user failed");
+		return -EACCES;
+	    }
             kfree(arr_ptr_local);
             break;
     
