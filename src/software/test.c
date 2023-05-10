@@ -16,7 +16,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#define _OPEN_SYS_ITOA_EXT
 
 int cnn_fd;
 int img_reader_fd;
@@ -38,16 +37,16 @@ void print_image(int *arr, int numrows, int numcols) {
           ptr = (int *) arr + i*numcols + j;
           printf("Image at row %d, col %d:\n", i, j);
           lsbyte = (char *) ptr + 0;
-          itoa(*lsbyte, buffer, DECIMAL);
+          itoa(*lsbyte, buffer, 10);
           printf("Least significant byte is: %s ", buffer);
           rbyte = (char *) ptr + 3;
-          itoa(*rbyte, buffer, DECIMAL)
+          itoa(*rbyte, buffer, 10);
           printf("Red byte is: %s ", buffer);
           gbyte = (char *) ptr + 2;
-          itoa(*gbyte, buffer, DECIMAL);
+          itoa(*gbyte, buffer, 10);
           printf("Green byte is: %s ", buffer);
           bbyte = (char *) ptr + 1;
-          itoa(*bbyte, buffer, DECIMAL)
+          itoa(*bbyte, buffer, 10);
           printf("Blue byte is: %s \n", buffer);
       } 
   }
