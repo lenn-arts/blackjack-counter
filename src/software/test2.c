@@ -3,8 +3,8 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-#define HW_REGS_BASE ( 0xc0000000 )
-#define HW_REGS_SPAN ( 0x00000400 )
+#define HW_REGS_BASE ( 0x00000000 )
+#define HW_REGS_SPAN ( 0x00000200 )
 #define HW_REGS_MASK ( HW_REGS_SPAN - 1 )
 #define LED_PIO_BASE 0x0
 
