@@ -25,16 +25,16 @@ void print_image(int *arr, int numrows, int numcols) {
   for (int i = 0; i < numrows; i++) {
       for (int j = 0; j < numcols; j++) {
           if (i % 120 != 0) continue;
-          ptr = arr + i*numcols + j;
+          ptr = (int *) arr + i*numcols + j;
           printf("Image at row %d, col %d:\n", i, j);
-          lsbyte = ptr;
+          lsbyte = (char *) ptr + 0;
           printf("Least significant byte is: %d ", *lsbyte);
           rbyte = (char *) ptr + 3;
           printf("Red byte is: %d ", *rbyte);
           gbyte = (char *) ptr + 2;
           printf("Green byte is: %d ", *gbyte);
           bbyte = (char *) ptr + 1;
-          printf("Blue byte is: %d ", *bbyte);
+          printf("Blue byte is: %d \n", *bbyte);
       } 
   }
   
