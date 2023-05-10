@@ -34,9 +34,9 @@ void print_image(int *arr, int numrows, int numcols) {
  
   for (int i = 0; i < numrows; i++) {
       for (int j = 0; j < numcols; j++) {
-          if (i % 12 != 0) continue;
+          //if (i % 12 != 0) continue;
           ptr = (int *) arr + i*numcols + j;
-          printf("Image at row %d, col %d:\n", i, j);
+          //printf("Image at row %d, col %d:\n", i, j);
           lsbyte = (char *) ptr + 0;
           sprintf(buffer, "%d", *lsbyte);
           fputs(buffer, fp);
