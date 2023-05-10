@@ -18,6 +18,7 @@
 
 int cnn_fd;
 int img_reader_fd;
+char *test
 
 /* Read and print the background color */
 void print_value(void) {
