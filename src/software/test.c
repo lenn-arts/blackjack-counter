@@ -103,6 +103,7 @@ int main()
 
     int* ptr[numlines];
     for (i = 0; i < numlines; i++) {
+      printf("Line number %d\n", i);
       ptr[i] = get_value(1);
     }
     for (i = 0; i < numlines; i++) {
