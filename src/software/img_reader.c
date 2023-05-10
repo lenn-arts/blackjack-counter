@@ -71,7 +71,7 @@ static int* read_img(int max_reads){
 
 static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
-    int size = 3000;
+    int size = 2000;
     // new array of same size as input
     // changes
     int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
