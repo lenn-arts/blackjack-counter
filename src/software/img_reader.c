@@ -80,7 +80,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
     pr_info("iooctl: size = %d, sizeof(val_local) = %d\n", size, sizeof(val_local));
     
 
-    switch(cmd){
+    switch(cmd){kfree(arr_ptr_local);
         case IMG_WRITE:;
             /* copy_from_user(to, from, length) */
             /* copy from arg to vla (to dev.virtbase)*/
@@ -106,8 +106,8 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
             pr_info("\n");
             if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(val_local))) {
 		pr_info("Copy to user failed\n");
-		kfree(arr_ptr_local);
-		return 0;//-EACCES;
+		
+		return -EACCES;
 	    }
             kfree(arr_ptr_local);
             break;
