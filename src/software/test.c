@@ -18,10 +18,17 @@
 
 int cnn_fd;
 int img_reader_fd;
-char *test;
+char path_to_img[] = "./rgb888img";
 void print_image(int *arr, int numrows, int numcols) {
   int *ptr;
   char* rbyte, *gbyte, *bbyte, *lsbyte;
+  FILE* fp;
+  fp = fopen(path_to_img, "w");
+  if (fp == NULL) {
+      perror("Failed: ");
+      return 1;
+  }
+ 
   for (int i = 0; i < numrows; i++) {
       for (int j = 0; j < numcols; j++) {
           if (i % 120 != 0) continue;
@@ -37,6 +44,8 @@ void print_image(int *arr, int numrows, int numcols) {
           printf("Blue byte is: %d \n", *bbyte);
       } 
   }
+  
+  fclose(fp);
   
 }
 /* Read and print the background color */
