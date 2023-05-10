@@ -12,6 +12,7 @@
 #include <linux/fs.h>
 #include <linux/uaccess.h>
 #include "img_reader.h"
+#include <time.h>
 
 #define DRIVER_NAME "img_reader"
 
