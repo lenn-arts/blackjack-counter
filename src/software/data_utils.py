@@ -9,6 +9,16 @@ from torchvision import transforms, utils
 import PIL.Image
 import numpy as np
 
+def transform(input:np.ndarray):
+    transform = transforms.Compose(
+                [transforms.ToTensor(),
+                 
+                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                 transforms.Resize((100,100))])
+    image = transform(input)
+    return image
+
+
 class PlayingCardsSet(Dataset):
     def __init__(self, root_dir, ds_type="train", transform=True) -> None:
         super().__init__()
