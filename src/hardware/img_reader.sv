@@ -45,7 +45,7 @@ module img_reader(
 					get_img <= 1'd1;
 					//offset_to_zeros <= 32'd0; CHANGED THIS
 					counter <= counter + 32'd1;
-					if (!HSYNC && !VSYNC) begin
+					if (!VSYNC) begin
 						offset_to_zeros <= counter;
 						//counter <= 32'd5; // CHANGED THIS
 						reset_next <= 1'b1;
