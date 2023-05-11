@@ -28,13 +28,10 @@ module img_reader(
 
 	always_ff @(posedge clk) begin
 		// RESET
-		if (reset_next)begin
+		if (reset_next) begin
 			counter <= 32'd0;
 			reset_next <= 1'b0;
-		end
-
-
-		if (reset) begin
+		end else if (reset) begin
 			get_img <= 1'd0;
 			counter <= 32'd0;
 			offset_to_zeros <= 32'd0;
@@ -55,6 +52,7 @@ module img_reader(
 					get_img <= 1'd0;
 					counter <= 32'd0;
 				end
+				default: ;
 			endcase
 		end else begin 
 			//get_img <= 1'd0; // here:: 
