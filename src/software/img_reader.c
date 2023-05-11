@@ -60,7 +60,7 @@ static int* read_img(int max_reads){
     for (i_read = 0; i_read < max_reads; i_read = i_read +1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
         *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here; 
-        usleep(1);
+        //usleep(1);
         //pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
     }
     int offset_zero = ioread32(dev.virtbase+4);
@@ -74,7 +74,7 @@ static int* read_img(int max_reads){
 static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     //int size = 640;
-    int size = 640 * 480;
+    int size = 10 * 10;
     // new array of same size as input
     // changes
     int *arr_ptr = val_arg;
