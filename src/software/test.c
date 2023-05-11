@@ -16,7 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#define _OPEN_SYS_ITAO_EXT
+#define _OPEN_SYS_ITOA_EXT
 
 int cnn_fd;
 int img_reader_fd;
