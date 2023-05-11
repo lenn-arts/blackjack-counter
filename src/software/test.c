@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#define _OPEN_SYS_ITAO_EXT
 
 int cnn_fd;
 int img_reader_fd;
@@ -37,7 +39,7 @@ void print_value(void) {
 /* Set the background color */
 int* get_value(int mode)
 {
-  int* value_local;
+  int* value_local = malloc((640*480+1)*sizeof(int));
   if (mode==0){ // regular mode
     printf("get_val: READ_VAL");
     if (ioctl(cnn_fd, CNN_READ_VAL, value_local)) {
@@ -82,8 +84,9 @@ int main()
     static const char filename_cnn[] = "/dev/cnn_mem";
     static const char filename_img_reader[] = "/dev/img_reader";
 
-    int size=500;
-    int img[500] = {0};
+    int numlines = 480;
+    int size=640;
+    //int img[500] = {0};
     int i;  // Loop variable
     /*for (i = 0; i < size; i=i+1) // Using for loop we are initializing
     {
@@ -116,7 +119,9 @@ int main()
     int* ptr = get_value(1);
     printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
+    free(ptr);
     usleep(400000);
+    
     //}
 
     printf("CNN Userspace program terminating\n");
