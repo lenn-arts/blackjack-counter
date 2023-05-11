@@ -13,25 +13,25 @@ class Cnn(nn.Module):
         super().__init__()
         #act = 
         self.layers = []
-        self.layers.append(nn.Conv2d(1, 16, 5, stride=2))
+        self.layers.append(nn.Conv2d(3, 32, 3, stride=2))
         self.layers.append(nn.ReLU())
         self.layers.append(nn.MaxPool2d(2, 2))
-        self.layers.append(nn.Conv2d(16, 64, 5, stride=2))
+        self.layers.append(nn.Conv2d(32, 128, 3, stride=2))
         self.layers.append(nn.ReLU())
-        #self.layers.append(nn.MaxPool2d(2, 2))
-        self.layers.append(nn.Conv2d(64, 256, 3, padding=1, stride=2))
+        self.layers.append(nn.MaxPool2d(2, 2))
+        self.layers.append(nn.Conv2d(64, 256, 3, padding=1, stride=1))
         self.layers.append(nn.ReLU())
         #self.layers.append(nn.MaxPool2d(2, 2))
         #self.layers.append(nn.Conv2d(128, 256, 3, padding=1))
         #self.layers.append(act)
 
-        self.layers.append(nn.Linear(256*7*7,800))
+        self.layers.append(nn.Linear(256*5*5,1000))
         self.layers.append(nn.ReLU())
         #self.layers.append(nn.Linear(8000,1000))
         #self.layers.append(act)
-        #self.layers.append(nn.Linear(1000,200))
-        #self.layers.append(nn.ReLU())
-        self.layers.append(nn.Linear(800,53))
+        self.layers.append(nn.Linear(1000,200))
+        self.layers.append(nn.ReLU())
+        self.layers.append(nn.Linear(200,53))
         self.layers = nn.ModuleList(self.layers)
         print(self)
 
@@ -43,6 +43,7 @@ class Cnn(nn.Module):
                 output = torch.flatten(output, 1)
                 first_linear = True
             output = layer(output)
+            #print(output.shape)
             #if not isinstance(layer, nn.MaxPool2d) and i_layer < len(self.layers):
             #    output = torch.nn.functional.relu(output)
         return output
@@ -55,9 +56,9 @@ def train(model, src_path, device):
     print([len(dsi) for dsi in datasets.values()])
 
     dataloaders = {}
-    batch_size = 32
+    batch_size = 16
     dataloaders["train"] = torch.utils.data.DataLoader(datasets["train"], batch_size=batch_size,
-                                         shuffle=False, num_workers=0)
+                                         shuffle=True, num_workers=0)
     dataloaders["test"] = torch.utils.data.DataLoader(datasets["test"], batch_size=batch_size,
                                          shuffle=False, num_workers=0)
     #print(next(iter(dataloaders["train"]))["image"].shape)
@@ -65,7 +66,7 @@ def train(model, src_path, device):
     loss_criterion = nn.CrossEntropyLoss() # includes softmax on output of the network
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0005) #0.000005
 
-    num_epochs = 5
+    num_epochs = 10
     for epoch in range(num_epochs):
         running_loss = 0.0
         running_acc = 0.0
@@ -73,7 +74,8 @@ def train(model, src_path, device):
             # get batch data
             gt_labels = batch["label"].to(device)
             images = batch["image"].to(device)
-            #print("gt\t", gt_labels)
+            print("gt\t", gt_labels)
+            print([batch["filename"][i].split("/")[-2:] for i in range(len(batch["filename"]))])
             
             # reset gradients to zero
             optimizer.zero_grad()
@@ -133,7 +135,7 @@ def test(model, src_path, device):
 
 if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/PlayingCards_small")
+    src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/CustomSet")
     model = Cnn()
     train(model, src_path, device)
     test(model, src_path, device)
