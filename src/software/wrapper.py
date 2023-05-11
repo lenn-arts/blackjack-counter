@@ -3,12 +3,15 @@ import numpy as np
 import os
 from data_utils import transform
 from cnn import Cnn
+import torch
 
 if __name__ == "__main__":
     pass
     mylib = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)),'test.so'))
     cnn = Cnn()
-    cnn.load_state_dict("path to model")
+    checkpoint = torch.load("model.pth")
+    cnn.load_state_dict(checkpoint['model_state_dict'])
+    cnn.eval()
     # for loop begin
     # read from c file
     mylib.read("")
