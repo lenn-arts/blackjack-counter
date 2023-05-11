@@ -90,6 +90,29 @@ void print_value(void) {
   end:;
 }
 
+// inspired by online resources on array rotating
+void reverse(int arr[], int start, int end)
+{
+  while (start <= end)
+  {
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+    start++;
+    end--;
+  }
+}
+// Function to Rotate k elements to right
+void rotatetoright(int arr[], int num_elem, int k)
+{
+  // Reverse first n-k elements
+  reverse(arr, 0, num_elem - k - 1);
+  // Reverse last k elements
+  reverse(arr, num_elem - k, num_elem - 1);
+  // Reverse whole array
+  reverse(arr, 0, num_elem - 1);
+}
+
 /* Set the background color */
 int* get_value(int mode)
 {
@@ -108,7 +131,7 @@ int* get_value(int mode)
         return -1;
     }
     lsbyte = value_local;
-    int offset = *(lsbyte+640*480);
+    int offset = *(value_local+640*480);
     printf("pointer is %d\n", offset);
     printf("Least significant byte is: %d\n", *lsbyte);
     rbyte = (char *) value_local + 3;
@@ -118,6 +141,10 @@ int* get_value(int mode)
     bbyte = (char *) value_local + 1;
     printf("Blue byte is: %d\n", *bbyte);
     //printf("%d", value_local);
+
+    //memmove(&lsbyte[k+1], &lsbyte[k], (numItems-k-1)*sizeof(double));
+    //items[k] = value;
+    rotatetoright(lsbyte, 640*480, 500);
   }
   printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
   
