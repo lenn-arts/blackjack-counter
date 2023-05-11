@@ -11,6 +11,7 @@
 #include <linux/of_address.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+#include <linux/delay.h>
 #include "img_reader.h"
 
 #define DRIVER_NAME "img_reader"
@@ -60,7 +61,7 @@ static int* read_img(int max_reads){
     for (i_read = 0; i_read < max_reads; i_read = i_read +1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
         *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here; 
-        //usleep(1);
+        ndelay(10000);
         //pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
     }
     int offset_zero = ioread32(dev.virtbase+4);
