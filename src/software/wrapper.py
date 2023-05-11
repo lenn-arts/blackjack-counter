@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # CNN
     pred = cnn(in_tensor)
     score = pred
-    print("score": score)
+    print("score:", score)
 
     # send to c file
     #mylib.write_to_hex(score)
