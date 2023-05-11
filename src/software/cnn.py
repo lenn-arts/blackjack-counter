@@ -137,7 +137,7 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/CustomSet")
     model = Cnn()
-    #checkpoint = torch.load("model.pth")
-    #model.load_state_dict(checkpoint['model_state_dict'])
-    train(model, src_path, device)
-    test(model, src_path, device)
+    checkpoint = torch.load("model.pth")
+    model.load_state_dict(checkpoint['model_state_dict'])
+    #train(model, src_path, device)
+    #test(model, src_path, device)
