@@ -79,7 +79,7 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
     // changes
     int *arr_ptr = val_arg;
     //int (*a)[10] = l;
-    int val_local[640];
+    //int val_local[640];
     //pr_info("iooctl: size = %d, sizeof(val_local) = %d\n", size, sizeof(val_local));
     
 
