@@ -60,8 +60,8 @@ static int* read_img(int max_reads){
     for (i_read = 0; i_read < max_reads; i_read = i_read +1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
         *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here; 
-        //usleep(1);
-        pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
+        usleep(1);
+        //pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
     }
     int offset_zero = ioread32(dev.virtbase+4);
     //*(out_ptr+i_read+1) = offset_zero;
