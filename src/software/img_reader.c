@@ -79,9 +79,9 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
     int (*arr_ptr)[size] = val_arg; // int (*arr_ptr)[10] = val_arg;
     //int *arr_ptr = val_arg;
     //int (*a)[10] = l;
-    int val_local[640];
+    //int val_local[640];
     //pr_info("iooctl: val_local size %d", sizeof(*arr_ptr)/sizeof((*arr_ptr)[0]));
-    //int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
+    int val_local[sizeof(*arr_ptr)/sizeof((*arr_ptr)[0])];
 
     switch(cmd){
         case IMG_WRITE:;
@@ -104,9 +104,9 @@ static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val
 
         case IMG_READ:;
             int* arr_ptr_local = read_img(size);
-            //pr_info("ictl_reading: done reading %d", arr_ptr_local);
-            //pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
-            //pr_info("\n");
+            pr_info("ictl_reading: done reading %d", arr_ptr_local);
+            pr_info("ictl_reading: val_local[0] %d, %d", *(arr_ptr_local), (int) arr_ptr_local[0]);
+            pr_info("\n");
             if (copy_to_user(arr_ptr, arr_ptr_local, sizeof(int)*size)){
                 pr_info("copy to user failed");
                 return -EACCES;
