@@ -204,7 +204,7 @@ int main()
     for (i = 0; i < numlines; i++) {
       free(ptr[i]); 
     }*/
-    msleep(3000);
+    usleep(2000000);
     int *ptr = get_value(1);
     print_image(ptr, 480, 640);
     printf("main: got value %d", ptr);
