@@ -57,7 +57,7 @@ static int* read_img(int max_reads){
         pr_info("ERROR: could not allocate %d bytes in memory\n", sizeof(int)*(max_reads));
         } // dynamic allocation
     int i_read;
-    for (i_read = 0; i_read < max_reads; i_read++){
+    for (i_read = 0; i_read < max_reads; i_read = i_read +1){
         //*(out_ptr+addr_local) = ioread16(dev.virtbase+addr+addr_local);
         *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here; 
         //usleep(1);
@@ -74,7 +74,7 @@ static int* read_img(int max_reads){
 static long img_reader_ioctl(struct file *f, unsigned int cmd, unsigned long val_arg)
 {
     //int size = 640;
-    int size = 640 * 480 +1;
+    int size = 640 * 480;
     // new array of same size as input
     // changes
     int *arr_ptr = val_arg;
