@@ -63,7 +63,7 @@ static int* read_img(int max_reads){
         *(out_ptr+i_read) = ioread32(dev.virtbase+0); // here; 
         //*(out_ptr+i_read) = ioread32(dev.virtbase+0);
         //usleep(1);
-        ndelay(1000);
+        ndelay(100000);
         //pr_info("Kread_value: from %d (%d) read %d (%b)", i_read, dev.virtbase, *(out_ptr+i_read), *(out_ptr+i_read));
     }
     ndelay(30000);
