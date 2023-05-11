@@ -24,11 +24,21 @@ module img_reader(
 
 	logic [31:0] offset_to_zeros = 32'd0;
 	logic [31:0] counter = 32'd0;
+	logic reset_next = 1'b0;
 
 	always_ff @(posedge clk) begin
 		// RESET
+		if (reset_next)begin
+			counter <= 32'd0;
+			reset_next <= 1'b0;
+		end
+
+
 		if (reset) begin
 			get_img <= 1'd0;
+			counter <= 32'd0;
+			offset_to_zeros <= 32'd0;
+			reset_next <= 1'b0;
 		end else if (chipselect && read) begin
 			case(address)
 				8'b0: begin
@@ -37,12 +47,13 @@ module img_reader(
 					counter <= counter + 32'd1;
 					if (!HSYNC && !VSYNC) begin
 						offset_to_zeros <= counter;
-						counter <= 32'd5; // here
+						//counter <= 32'd5; // CHANGED THIS
+						reset_next <= 1'b1;
 					end
 				end
 				8'b1: begin
 					get_img <= 1'd0;
-					counter <= 32'd6;
+					counter <= 32'd0;
 				end
 			endcase
 		end else begin 
