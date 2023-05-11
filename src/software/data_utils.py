@@ -14,7 +14,7 @@ def transform(input:np.ndarray):
                 [transforms.ToTensor(),
                  
                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                 transforms.Resize((100,100))])
+                 transforms.CenterCrop((100,100))])
     image = transform(input)
     return image
 
@@ -52,7 +52,7 @@ class PlayingCardsSet(Dataset):
                     color_str = "spade"
                 #number = fn[0] if fn[1] != "0" else "10"
                 number = card_name[len(color_str):]
-                label = color_map[color_str]*13+number_map[number]
+                label = color_map[color_str]#*13+number_map[number]#
             else: # joker
                 label = 52
             return label
@@ -83,7 +83,7 @@ class PlayingCardsSet(Dataset):
         
         # generate train and test
         self.filenames_train = []
-        self.len_train = 25
+        self.len_train = 100
         self.filenames_test = []
         current_label = self.labels[0]
         next_label = self.labels[0]

@@ -19,7 +19,7 @@ class Cnn(nn.Module):
         self.layers.append(nn.Conv2d(32, 128, 3, stride=2))
         self.layers.append(nn.ReLU())
         self.layers.append(nn.MaxPool2d(2, 2))
-        self.layers.append(nn.Conv2d(64, 256, 3, padding=1, stride=1))
+        self.layers.append(nn.Conv2d(128, 256, 3, padding=1, stride=1))
         self.layers.append(nn.ReLU())
         #self.layers.append(nn.MaxPool2d(2, 2))
         #self.layers.append(nn.Conv2d(128, 256, 3, padding=1))
@@ -31,7 +31,7 @@ class Cnn(nn.Module):
         #self.layers.append(act)
         self.layers.append(nn.Linear(1000,200))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.Linear(200,53))
+        self.layers.append(nn.Linear(200,4))
         self.layers = nn.ModuleList(self.layers)
         print(self)
 
@@ -137,5 +137,7 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/CustomSet")
     model = Cnn()
+    #checkpoint = torch.load("model.pth")
+    #model.load_state_dict(checkpoint['model_state_dict'])
     train(model, src_path, device)
     test(model, src_path, device)
