@@ -14,7 +14,7 @@ if __name__ == "__main__":
     cnn.eval()
     # for loop begin
     # read from c file
-    mylib.read("")
+    mylib.main()
 
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'rgb888img0'), 'r') as f:
         pixel_values = np.loadtxt(f)
