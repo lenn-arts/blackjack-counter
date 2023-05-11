@@ -65,7 +65,7 @@ static int* read_img(int max_reads){
     }
     int offset_zero = ioread32(dev.virtbase+4);
     pr_info("Kread_value: offset zero %d", offset_zero);
-    pr_info("Kread_value: returning %d", out_ptr);
+    //pr_info("Kread_value: returning %d", out_ptr);
     return out_ptr;
 };
 
