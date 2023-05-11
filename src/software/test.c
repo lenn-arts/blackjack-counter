@@ -112,8 +112,8 @@ int main()
     // printf("initial state: ");
 
     //for (i = 0 ; i < 24 ; i++) {
-    long arr_ptr = (long) img; // &arr
-    printf("\nU arr_ptr: %d", arr_ptr);
+    //long arr_ptr = (long) img; // &arr
+    //printf("\nU arr_ptr: %d", arr_ptr);
     //set_value(arr_ptr, 0);
     //int* ptr = get_value();
     int* ptr = get_value(1);
