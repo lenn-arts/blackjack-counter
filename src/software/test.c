@@ -144,7 +144,7 @@ int* get_value(int mode)
 
     //memmove(&lsbyte[k+1], &lsbyte[k], (numItems-k-1)*sizeof(double));
     //items[k] = value;
-    rotatetoright(lsbyte, 640*480, 500);
+    //rotatetoright(lsbyte, 640*480, 500);
   }
   printf("Uget_value: ptr: %d \t ptr[0]: %d\n", value_local, *(value_local));
   
