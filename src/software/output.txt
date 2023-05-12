@@ -12,3 +12,4 @@ The current card is a 9, add 0 to score.
 The current card is a jack, add -1 to score.
 The current card is a 10, add -1 to score.
 The current card is a 9, add 0 to score.
+The current card is a 9, add 0 to score.
