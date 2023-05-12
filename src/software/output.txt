@@ -5,3 +5,4 @@ The current card is a 10, add -1 to score.
 The current card is a 10, add -1 to score.
 The current card is a 10, add -1 to score.
 The current card is a 10, add -1 to score.
+The current card is a king, add -1 to score.
