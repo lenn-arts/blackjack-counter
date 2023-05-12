@@ -156,12 +156,12 @@ void set_value(const int *value_local, int target)
 {
     switch (target)
     {
-    case 0:rotate
+    case 0:
         if (ioctl(cnn_fd, CNN_WRITE_VAL, value_local)) {
             perror("ioctl(CNN_WRITE_VAL) failed");
             return;
         }
-        break;rotate
+        break;
     
     default:
         break;
