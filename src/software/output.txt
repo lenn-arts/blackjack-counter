@@ -36,3 +36,4 @@ The current card is a 2, add 1 to score.
 The current card is a 2, add 1 to score.
 The current card is a 10, add -1 to score.
 The current card is a jack, add -1 to score.
+The current card is a 6, add 1 to score.
