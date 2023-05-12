@@ -15,3 +15,4 @@ The current card is a 9, add 0 to score.
 The current card is a 9, add 0 to score.
 The current card is a 8, add 0 to score.
 The current card is a 8, add 0 to score.
+The current card is a king, add -1 to score.
