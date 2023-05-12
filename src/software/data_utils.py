@@ -14,7 +14,8 @@ def transform(input:np.ndarray):
                 [transforms.ToTensor(),
                  
                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                 transforms.CenterCrop((60,60))])
+                 transforms.CenterCrop((80,120)),
+                 transforms.Resize((80,80))])
     image = transform(input)
     return image
 

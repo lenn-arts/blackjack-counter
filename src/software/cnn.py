@@ -174,21 +174,30 @@ if __name__ == "__main__":
     src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"../../Data/CustomSet")
     model = Cnn()
     chkpt_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"model.pth")
-    #checkpoint = torch.load(chkpt_path)
-    #model.load_state_dict(checkpoint['model_state_dict'])
+    
     #train(model, src_path, device, chkpt=chkpt_path)
-    test(model, src_path, device, chkpt=chkpt_path)
-    #with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'rgb888img0'), 'r') as f:
-    #    pixel_values = np.loadtxt(f)
-    #pixel_values = pixel_values.reshape(640,480,3).astype(np.uint8)
+    #test(model, src_path, device, chkpt=chkpt_path)
+
+    checkpoint = torch.load(chkpt_path)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'rgb888img'), 'r') as f:
+        pixel_values = np.loadtxt(f)
+    pixel_values = pixel_values.reshape(640,480,3).astype(np.uint8)
     # postprocess
-    #in_tensor = transform(pixel_values)
-    #in_tensor = torch.unsqueeze(in_tensor,0)
-    #print("my shape",in_tensor.shape)
-    #out = model(in_tensor)
-    #pred = torch.argmax(torch.softmax(out, -1), -1)
+    in_tensor = transform(pixel_values)
+    in_tensor = torch.unsqueeze(in_tensor,0)
+    print("my shape",in_tensor.shape)
+    out = model(in_tensor)
+    pred = torch.argmax(torch.softmax(out, -1), -1).detach().item()
     #color_map = {"club":0,"diamond":1,"heart":2,"spade":3}
     #color_map_inverse = {val:str(key) for key, val in color_map.items()}
-    #print("output:", pred)"""
+    print("output:", pred)
+    pred_map = {0: "ace", 1:2, 2:3, 3:4, 4:5, 5:6, 6:7, 7:8, 8:9, 9:10, 10:"jack", 11:"queen",12:"king"}
+    point_map = {0: -1, 1: 1, 2:1, 3:1, 4:1, 5:1, 6:0, 7:0, 8:0, 9:-1, 10:-1, 11: -1, 12:-1}
+    # add +1 : card 2-6
+    # nothing: 7-9
+    # subtract -1: 10-ace
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'output.txt'), 'a') as f:
+        f.write(f"the current card is a {pred_map[pred]}, add {point_map[pred]} to score.")
     #
     
