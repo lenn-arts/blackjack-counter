@@ -3,3 +3,4 @@ The current card is a 8, add 0 to score.
 The current card is a 10, add -1 to score.
 The current card is a 10, add -1 to score.
 The current card is a 10, add -1 to score.
+The current card is a 10, add -1 to score.
