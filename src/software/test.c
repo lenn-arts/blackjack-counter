@@ -116,7 +116,7 @@ void rotatetoright(int arr[], int num_elem, int k)
 /* Set the background color */
 int* get_value(int mode)
 {
-  int* value_local = malloc((640 * 480 + 1) * sizeof(int)); // plus 1 for the offset bit
+  int* value_local = malloc((640 * 480) * sizeof(int)); // plus 1 for the offset bit
   char* rbyte, *gbyte, *bbyte, *lsbyte; // To check that the least significant byte is always 0
   if (mode==0){ // regular mode
     printf("get_val: READ_VAL");
@@ -156,12 +156,12 @@ void set_value(const int *value_local, int target)
 {
     switch (target)
     {
-    case 0:
+    case 0:rotate
         if (ioctl(cnn_fd, CNN_WRITE_VAL, value_local)) {
             perror("ioctl(CNN_WRITE_VAL) failed");
             return;
         }
-        break;
+        break;rotate
     
     default:
         break;
@@ -204,14 +204,11 @@ int main()
     for (i = 0; i < numlines; i++) {
       free(ptr[i]); 
     }*/
-    usleep(2000000);
     int *ptr = get_value(1);
     print_image(ptr, 480, 640);
     printf("main: got value %d", ptr);
     printf("main: got value %d", ptr[0]);
     free(ptr);
-
-    usleep(400000);
     //}
 
     printf("CNN Userspace program terminating\n");
