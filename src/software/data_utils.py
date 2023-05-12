@@ -14,7 +14,8 @@ def transform(input:np.ndarray):
                 [transforms.ToTensor(),
                  
                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                 transforms.CenterCrop((100,100))])
+                 transforms.CenterCrop((80,120)),
+                 transforms.Resize((80,80))])
     image = transform(input)
     return image
 
@@ -52,7 +53,7 @@ class PlayingCardsSet(Dataset):
                     color_str = "spade"
                 #number = fn[0] if fn[1] != "0" else "10"
                 number = card_name[len(color_str):]
-                label = color_map[color_str]#*13+number_map[number]#
+                label = number_map[number]#color_map[color_str]#*13+
             else: # joker
                 label = 52
             return label
@@ -83,7 +84,7 @@ class PlayingCardsSet(Dataset):
         
         # generate train and test
         self.filenames_train = []
-        self.len_train = 100
+        self.len_train = 20
         self.filenames_test = []
         current_label = self.labels[0]
         next_label = self.labels[0]
@@ -110,7 +111,7 @@ class PlayingCardsSet(Dataset):
             raise Exception("unvalid dataset subset type")
         self.labels = [get_label_from_filename_custom_set(fn) for fn in self.filenames]
         
-        print(len(self.filenames))
+        print("LEN DATA:",len(self.filenames))
         #index_debug = torch.randint(len(self.filenames), size=(100,)).numpy()
         #print(index_debug)
         #self.filenames = np.asarray(self.filenames)[index_debug]
@@ -140,7 +141,8 @@ class PlayingCardsSet(Dataset):
                 [transforms.ToTensor(),
                  
                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                 transforms.Resize((100,100))])
+                 transforms.CenterCrop((80,120)),
+                 transforms.Resize((80,80))])
             image = transform(image)
 
         if image.size()[0]==1:
